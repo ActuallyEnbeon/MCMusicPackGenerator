@@ -10,16 +10,87 @@
 <br>
 <input type="file" id="tracks_upload" accept=".ogg" multiple="true">
 <button id="add_tracks">Add track(s)</button>
-<br>
-<select id="track_select" size="10"></select>
-
-<p>The below stuff is just testing</p>
-<input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-<label for="vehicle1"> I have a bike</label><br>
-<input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-<label for="vehicle2"> I have a car</label><br>
-<input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-<label for="vehicle3"> I have a boat</label><br> 
+<br><br>
+<div class="tracks">
+    <select id="track_select" size="40"></select>
+    <div class="options_box"> <!-- TODO: Make the state of this depend on the selected music track -->
+        <!-- TODO: Add track info here i.e. name, artist, volume, etc. -->
+        <!-- TODO: Add weights option to each selection below -->
+        <input type="checkbox" class="game" name="game">
+        <label for="game">Overworld (all biomes)</label><br>
+        <input type="checkbox" class="creative" name="creative">
+        <label for="creative">Creative mode</label><br>
+        <input type="checkbox" class="menu" name="menu">
+        <label for="menu">Menu/Title screen</label><br>
+        <input type="checkbox" class="under_water" name="under_water">
+        <label for="under_water">Underwater</label>
+        <br>
+        <label for="overworld_biomes"><b>Overworld biomes</b></label>
+        <button type="button" id="overworld_biomes" class="collapsible_toggle">Show</button>
+        <div class="collapsible_content">
+            <input type="checkbox" class="badlands" name="badlands">
+            <label for="badlands">Badlands</label><br>
+            <input type="checkbox" class="bamboo_jungle" name="bamboo_jungle">
+            <label for="bamboo_jungle">Bamboo Jungle</label><br>
+            <input type="checkbox" class="cherry_grove" name="cherry_grove">
+            <label for="cherry_grove">Cherry Grove</label><br>
+            <input type="checkbox" class="deep_dark" name="deep_dark">
+            <label for="deep_dark">Deep Dark</label><br>
+            <input type="checkbox" class="desert" name="desert">
+            <label for="desert">Desert</label><br>
+            <input type="checkbox" class="dripstone_cave" name="dripstone_cave">
+            <label for="dripstone_cave">Dripstone Cave</label><br>
+            <input type="checkbox" class="flower_forest" name="flower_forest">
+            <label for="flower_forest">Flower Forest</label><br>
+            <input type="checkbox" class="forest" name="forest">
+            <label for="forest">Forest</label><br>
+            <input type="checkbox" class="frozen_peaks" name="frozen_peaks">
+            <label for="frozen_peaks">Frozen Peaks</label><br>
+            <input type="checkbox" class="grove" name="grove">
+            <label for="grove">Grove</label><br>
+            <input type="checkbox" class="jagged_peaks" name="jagged_peaks">
+            <label for="jagged_peaks">Jagged Peaks</label><br>
+            <input type="checkbox" class="jungle" name="jungle">
+            <label for="jungle">Jungle</label><br>
+            <input type="checkbox" class="lush_caves" name="lush_caves">
+            <label for="lush_caves">Lush Caves</label><br>
+            <input type="checkbox" class="meadow" name="meadow">
+            <label for="meadow">Meadow</label><br>
+            <input type="checkbox" class="old_growth_taiga" name="old_growth_taiga">
+            <label for="old_growth_taiga">Old Growth Taiga</label><br>
+            <input type="checkbox" class="snowy_slopes" name="snowy_slopes">
+            <label for="snowy_slopes">Snowy Slopes</label><br>
+            <input type="checkbox" class="sparse_jungle" name="sparse_jungle">
+            <label for="sparse_jungle">Sparse Jungle</label><br>
+            <input type="checkbox" class="stony_peaks" name="stony_peaks">
+            <label for="stony_peaks">Stony Peaks</label><br>
+            <input type="checkbox" class="swamp" name="swamp">
+            <label for="swamp">Swamp</label>
+        </div>
+        <br>
+        <label for="nether_biomes"><b>Nether biomes</b></label>
+        <button type="button" id="nether_biomes" class="collapsible_toggle">Show</button>
+        <div class="collapsible_content">
+            <input type="checkbox" class="basalt_deltas" name="basalt_deltas">
+            <label for="basalt_deltas">Basalt Deltas</label><br>
+            <input type="checkbox" class="crimson_forest" name="crimson_forest">
+            <label for="crimson_forest">Crimson Forest</label><br>
+            <input type="checkbox" class="nether_wastes" name="nether_wastes">
+            <label for="nether_wastes">Nether Wastes</label><br>
+            <input type="checkbox" class="soul_sand_valley" name="soul_sand_valley">
+            <label for="soul_sand_valley">Soul Sand Valley</label><br>
+            <input type="checkbox" class="warped_forest" name="warped_forest">
+            <label for="warped_forest">Warped Forest (?)</label>
+        </div>
+        <br>
+        <input type="checkbox" class="credits" name="credits">
+        <label for="credits">Credits (!)</label><br>
+        <input type="checkbox" class="dragon" name="dragon">
+        <label for="dragon">Dragon (!)</label><br>
+        <input type="checkbox" class="end" name="end">
+        <label for="end">The End (!)</label>
+    </div>
+</div>
 
 </body>
 <script src="main.js"></script>
