@@ -6,7 +6,7 @@ const trackList = document.getElementById("track_select");
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
 const trackOptionsBox = document.getElementById("track_options_box");
-const nameInput = document.getElementById("name");
+const nameInput = document.getElementById("track_name");
 const artistInput = document.getElementById("artist");
 
 const checkBoxes = {};

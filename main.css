@@ -2,13 +2,6 @@
   font-size: larger;
 }
 
-#track_options_box {
-    border: 1px solid black;
-    display: inline-block;
-    vertical-align: top;
-    min-width: 40em;
-}
-
 .collapsible_content {
   padding: 0 18px;
   display: none;
@@ -16,7 +9,23 @@
   background-color: #f1f1f1;
 }
 
+#options > div {
+    display: inline-block;
+}
+
 #track_select {
     min-width: 15em;
+    vertical-align: top;
+}
+
+#track_options_box {
+    border: 1px solid black;
+    display: inline-block;
+    vertical-align: top;
+    min-width: 40em;
+}
+
+#pack_options {
+    border: 1px solid black;
     vertical-align: top;
 }
