@@ -1,8 +1,12 @@
-#tracks > #options_box {
+.heading {
+  font-size: larger;
+}
+
+#track_options_box {
     border: 1px solid black;
     display: inline-block;
     vertical-align: top;
-    min-width: 60em;
+    min-width: 40em;
 }
 
 .collapsible_content {

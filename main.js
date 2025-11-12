@@ -5,12 +5,12 @@ const trackList = document.getElementById("track_select");
 
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
-const optionsBox = document.getElementById("options_box");
+const trackOptionsBox = document.getElementById("track_options_box");
 const nameInput = document.getElementById("name");
 const artistInput = document.getElementById("artist");
 
 const checkBoxes = {};
-for (const option of optionsBox.children) {
+for (const option of trackOptionsBox.children) {
     if (option.getAttribute("type") == "checkbox") { 
         checkBoxes[option.name] = option;
     }
@@ -23,12 +23,26 @@ for (const option of optionsBox.children) {
     }
 }
 
+// Helper functions
+function enableInputs() {
+    nameInput.disabled = false;
+    artistInput.disabled = false;
+    for (const key in checkBoxes) checkBoxes[key].disabled = false;
+}
+
+function disableInputs() {
+    nameInput.disabled = true;
+    artistInput.disabled = true;
+    for (const key in checkBoxes) checkBoxes[key].disabled = true;
+}
+
 // Clear all input fields when first loaded
 nameInput.value = "";
 artistInput.value = "";
 for (const key in checkBoxes) {
     checkBoxes[key].checked = false;
 }
+disableInputs();
 
 const tracksWithOptions = {};
 
@@ -70,6 +84,7 @@ function loadTrackOptions(trackName) {
     for (const key in getLocationsObject(trackName)) {
         checkBoxes[key].checked = getLocationsObject(trackName)[key];
     }
+    enableInputs();
 }
 
 function clearTrackOptions(trackName) {
