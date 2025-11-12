@@ -10,6 +10,7 @@
 <br>
 <input type="file" id="tracks_upload" accept=".ogg" multiple="true">
 <button id="add_tracks">Add track(s)</button>
+<button id="export_pack">Export pack</button>
 <br><br>
 <div id="options">
     <div id="tracks">
@@ -35,7 +36,7 @@
             <br>
             <label for="overworld_biomes"><b>Overworld biomes</b></label>
             <button type="button" id="overworld_biomes" class="collapsible_toggle">Show</button>
-            <div class="collapsible_content">
+            <div class="collapsible_content overworld">
                 <input type="checkbox" class="badlands" name="badlands">
                 <label for="badlands">Badlands</label><br>
                 <input type="checkbox" class="bamboo_jungle" name="bamboo_jungle">
@@ -46,8 +47,8 @@
                 <label for="deep_dark">Deep Dark</label><br>
                 <input type="checkbox" class="desert" name="desert">
                 <label for="desert">Desert</label><br>
-                <input type="checkbox" class="dripstone_cave" name="dripstone_cave">
-                <label for="dripstone_cave">Dripstone Cave</label><br>
+                <input type="checkbox" class="dripstone_caves" name="dripstone_cave">
+                <label for="dripstone_cave">Dripstone Caves</label><br>
                 <input type="checkbox" class="flower_forest" name="flower_forest">
                 <label for="flower_forest">Flower Forest</label><br>
                 <input type="checkbox" class="forest" name="forest">
@@ -78,7 +79,7 @@
             <br>
             <label for="nether_biomes"><b>Nether biomes</b></label>
             <button type="button" id="nether_biomes" class="collapsible_toggle">Show</button>
-            <div class="collapsible_content">
+            <div class="collapsible_content nether">
                 <input type="checkbox" class="basalt_deltas" name="basalt_deltas">
                 <label for="basalt_deltas">Basalt Deltas</label><br>
                 <input type="checkbox" class="crimson_forest" name="crimson_forest">
@@ -114,6 +115,9 @@
 </div>
 
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+<script src="packGenerator.js"></script>
 <script src="main.js"></script>
 <link rel="stylesheet" href="main.css">
 </html> 

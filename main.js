@@ -13,7 +13,7 @@ for (const option of trackOptionsBox.children) {
     if (option.getAttribute("type") == "checkbox") { 
         checkBoxes[option.name] = option;
     }
-    if (option.getAttribute("class") == "collapsible_content") {
+    if (option.classList.contains("collapsible_content")) {
         for (const child of option.children) {
             if (child.getAttribute("type") == "checkbox") { 
                 checkBoxes[child.name] = child;
@@ -24,6 +24,7 @@ for (const option of trackOptionsBox.children) {
 
 const packOptions = document.getElementById("pack_options");
 
+const trackFiles = {};
 const tracksWithOptions = {};
 
 // -- Helper functions --
@@ -63,6 +64,7 @@ document.getElementById("add_tracks").onclick = function() {
         var option = document.createElement("option");
         option.name = option.textContent = file.name;
         trackList.appendChild(option);
+        trackFiles[option.name] = file;
         tracksWithOptions[option.name] = {};
         clearTrackOptions(option.name);
          // TODO: Try autoloading track info from metadata
@@ -72,7 +74,12 @@ document.getElementById("add_tracks").onclick = function() {
     fileInput.value = null;
 }
 
-// -- File selection --
+// Pack exporting
+document.getElementById("export_pack").onclick = function() {
+    generatePackZip();
+}
+
+// -- Track selection --
 var currentSelectedTrack;
 
 function getLocationsObject(trackName) {
