@@ -28,4 +28,9 @@
 #pack_options {
     border: 1px solid black;
     vertical-align: top;
+    min-width: 35em;
+}
+
+#desc {
+  min-width: 31em;
 }

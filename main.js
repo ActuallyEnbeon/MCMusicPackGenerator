@@ -1,6 +1,5 @@
 // -- Constants --
 const fileInput = document.getElementById("tracks_upload");
-const uploadButton = document.getElementById("add_tracks");
 const trackList = document.getElementById("track_select");
 
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
@@ -23,32 +22,42 @@ for (const option of trackOptionsBox.children) {
     }
 }
 
-// Helper functions
-function enableInputs() {
+const packOptions = document.getElementById("pack_options");
+
+const tracksWithOptions = {};
+
+// -- Helper functions --
+function enableTrackInputs() {
     nameInput.disabled = false;
     artistInput.disabled = false;
     for (const key in checkBoxes) checkBoxes[key].disabled = false;
 }
 
-function disableInputs() {
+function disableTrackInputs() {
     nameInput.disabled = true;
     artistInput.disabled = true;
     for (const key in checkBoxes) checkBoxes[key].disabled = true;
 }
 
-// Clear all input fields when first loaded
+// -- Clear all input fields when first loaded --
+// Track input fields
 nameInput.value = "";
 artistInput.value = "";
 for (const key in checkBoxes) {
     checkBoxes[key].checked = false;
 }
-disableInputs();
-
-const tracksWithOptions = {};
+disableTrackInputs();
+// Pack input fields
+for (const key in packOptions.children) {
+    let element = packOptions.children[key];
+    if (element.nodeName == "INPUT") {
+        element.value = "";
+    }
+}
 
 // -- Interaction behaviour --
 // File uploading
-uploadButton.onclick = function() {
+document.getElementById("add_tracks").onclick = function() {
     // Add all files to trackList
     for (const file of fileInput.files) {
         var option = document.createElement("option");
@@ -63,7 +72,7 @@ uploadButton.onclick = function() {
     fileInput.value = null;
 }
 
-// File selection
+// -- File selection --
 var currentSelectedTrack;
 
 function getLocationsObject(trackName) {
@@ -84,7 +93,7 @@ function loadTrackOptions(trackName) {
     for (const key in getLocationsObject(trackName)) {
         checkBoxes[key].checked = getLocationsObject(trackName)[key];
     }
-    enableInputs();
+    enableTrackInputs();
 }
 
 function clearTrackOptions(trackName) {
@@ -96,7 +105,7 @@ function clearTrackOptions(trackName) {
     }
 }
 
-trackList.addEventListener('change', function (e) {
+trackList.onchange = function (e) {
     let idx = e.target.selectedIndex;
     let name = trackList[idx].textContent;
     if (currentSelectedTrack != undefined) {
@@ -106,9 +115,9 @@ trackList.addEventListener('change', function (e) {
     if (name != undefined) {
         loadTrackOptions(name);
     }
-});
+};
 
-// Collapsible options
+// -- Collapsible options --
 for (const toggle of collapsibleToggles) {
     toggle.onclick = function() {
         this.classList.toggle("active");

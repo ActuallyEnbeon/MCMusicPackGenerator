@@ -19,7 +19,7 @@
             <!-- TODO: Add track info here i.e. name, artist, volume, etc. -->
             <label for="artist">Artist</label>
             <input type="text" class="artist" id="artist" name="artist">
-            <label for="name">Name</label>
+            <label for="track_name">Name</label>
             <input type="text" class="track_name" id="track_name" name="track_name"><br>
             <br>
             <!-- TODO: Add weights option to each selection below -->
@@ -101,7 +101,15 @@
     </div>
     <div id="pack_options">
         <div class="heading"><b>Pack options</b></div>
-        <p>Placeholder</p>
+        <label for="pack_name">Name</label>
+        <input type="text" class="pack_name" id="pack_name" name="pack_name"><br>
+        <label for="desc">Description</label>
+        <input type="text" class="desc" id="desc" name="desc"><br>
+        <!-- TODO: Make these MC version selectors instead (maybe include the format selectors as an "advanced" option) -->
+        <label for="min_format">Min format</label>
+        <input type="number" min="1" max="69.0" class="min_format" id="min_format" name="min_format">
+        <label for="max_format">Max format</label>
+        <input type="number" min="1" max="69.0" class="max_format" id="max_format" name="max_format"><br>
     </div>
 </div>
 
