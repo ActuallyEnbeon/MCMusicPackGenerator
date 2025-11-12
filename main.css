@@ -38,3 +38,7 @@
 #desc {
   min-width: 31em;
 }
+
+#icon_preview {
+  max-width: 10em;
+}

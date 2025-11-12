@@ -3,7 +3,6 @@ function downloadPackZip() {
     let zip = new JSZip();
 
     // TODO: account for old pack format params
-    // TODO: use parseInt for formats before 69.0
     let packFile = {
         "pack": {
             "min_format": parseFloat(document.getElementById("min_format").value),
@@ -12,7 +11,11 @@ function downloadPackZip() {
         }
     }
     zip.file("pack.mcmeta", JSON.stringify(packFile));
-    // TODO: add pack.png uploading
+
+    let packIcon = iconFileUpload.files[0];
+    if (packIcon) {
+        zip.file("pack.png", packIcon);
+    }
 
     let assetsFolder = zip.folder("assets").folder("minecraft");
     let musicFolder = assetsFolder.folder("sounds").folder("music");

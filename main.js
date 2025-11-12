@@ -1,5 +1,5 @@
 // -- Constants --
-const fileInput = document.getElementById("tracks_upload");
+const trackFileUpload = document.getElementById("tracks_upload");
 const trackList = document.getElementById("track_select");
 
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
@@ -23,6 +23,7 @@ for (const option of trackOptionsBox.children) {
 }
 
 const packOptions = document.getElementById("pack_options");
+const iconFileUpload = document.getElementById("pack_icon_upload");
 
 const trackFiles = {};
 const tracksWithOptions = {};
@@ -57,10 +58,10 @@ for (const key in packOptions.children) {
 }
 
 // -- Interaction behaviour --
-// File uploading
+// Track uploading
 document.getElementById("add_tracks").onclick = function() {
     // Add all files to trackList
-    for (const file of fileInput.files) {
+    for (const file of trackFileUpload.files) {
         var option = document.createElement("option");
         option.name = option.textContent = file.name;
         trackList.appendChild(option);
@@ -71,12 +72,25 @@ document.getElementById("add_tracks").onclick = function() {
     }
 
     // Clear the file upload field
-    fileInput.value = null;
+    trackFileUpload.value = null;
+}
+
+// Pack icon uploading
+document.getElementById("upload_icon").onclick = function() {
+    let file = iconFileUpload.files[0];
+    if (file) {
+        // use FileReader to generate preview image
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById("icon_preview").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
 }
 
 // Pack exporting
 document.getElementById("export_pack").onclick = function() {
-    generatePackZip();
+    downloadPackZip();
 }
 
 // -- Track selection --
