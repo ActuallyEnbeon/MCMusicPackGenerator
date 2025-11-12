@@ -6,9 +6,11 @@ const trackList = document.getElementById("track_select");
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
 const optionsBox = document.getElementById("options_box");
+const nameInput = document.getElementById("name");
+const artistInput = document.getElementById("artist");
 
 const checkBoxes = {};
-for (const option of Array.from(optionsBox.children, (child) => child)) {
+for (const option of optionsBox.children) {
     if (option.getAttribute("type") == "checkbox") { 
         checkBoxes[option.name] = option;
     }
@@ -20,8 +22,11 @@ for (const option of Array.from(optionsBox.children, (child) => child)) {
         }
     }
 }
+
+// Clear all input fields when first loaded
+nameInput.value = "";
+artistInput.value = "";
 for (const key in checkBoxes) {
-    // Clear all checkboxes when first loaded
     checkBoxes[key].checked = false;
 }
 
@@ -36,6 +41,8 @@ uploadButton.onclick = function() {
         option.name = option.textContent = file.name;
         trackList.appendChild(option);
         tracksWithOptions[option.name] = {};
+        clearTrackOptions(option.name);
+         // TODO: Try autoloading track info from metadata
     }
 
     // Clear the file upload field
@@ -45,15 +52,32 @@ uploadButton.onclick = function() {
 // File selection
 var currentSelectedTrack;
 
+function getLocationsObject(trackName) {
+    return tracksWithOptions[trackName]["locations"];
+}
+
 function saveTrackOptions(trackName) {
+    tracksWithOptions[trackName]["name"] = nameInput.value;
+    tracksWithOptions[trackName]["artist"] = artistInput.value;
     for (const key in checkBoxes) {
-        tracksWithOptions[trackName][key] = checkBoxes[key].checked;
+        getLocationsObject(trackName)[key] = checkBoxes[key].checked;
     }
 }
 
 function loadTrackOptions(trackName) {
-    for (const key in tracksWithOptions[trackName]) {
-        checkBoxes[key].checked = tracksWithOptions[trackName][key];
+    nameInput.value = tracksWithOptions[trackName]["name"];
+    artistInput.value = tracksWithOptions[trackName]["artist"];
+    for (const key in getLocationsObject(trackName)) {
+        checkBoxes[key].checked = getLocationsObject(trackName)[key];
+    }
+}
+
+function clearTrackOptions(trackName) {
+    tracksWithOptions[trackName]["name"] = "";
+    tracksWithOptions[trackName]["artist"] = "";
+    tracksWithOptions[trackName]["locations"] = {};
+    for (const key in checkBoxes) {
+        getLocationsObject(trackName)[key] = false;
     }
 }
 
