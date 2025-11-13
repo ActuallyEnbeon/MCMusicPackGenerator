@@ -33,6 +33,7 @@ function downloadPackZip() {
         // First, get track info
         let name = tracksWithOptions[key]["name"];
         let artist = tracksWithOptions[key]["artist"];
+        let volume = tracksWithOptions[key]["volume"];
         let locations = tracksWithOptions[key]["locations"];
 
         // Save .ogg first
@@ -56,11 +57,14 @@ function downloadPackZip() {
             }
 
             // Add this track to the soundsFile at the soundEvent
-            soundsFile[soundEvent]["sounds"].push({
+            let soundData = {
                 "name": "minecraft:music/" + artist + "/" + name,
                 "stream": true,
-                // TODO: volume and other attributes
-            })
+            };
+            if (volume != 1) soundData["volume"] = volume;
+            // TODO: other attributes
+
+            soundsFile[soundEvent]["sounds"].push(soundData)
         }
 
         // Last, update langFile

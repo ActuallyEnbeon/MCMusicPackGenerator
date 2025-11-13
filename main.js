@@ -7,6 +7,7 @@ const collapsibleToggles = document.getElementsByClassName("collapsible_toggle")
 const trackOptionsBox = document.getElementById("track_options_box");
 const nameInput = document.getElementById("track_name");
 const artistInput = document.getElementById("artist");
+const volumeInput = document.getElementById("volume");
 
 const checkBoxes = {};
 for (const option of trackOptionsBox.children) {
@@ -32,12 +33,14 @@ const tracksWithOptions = {};
 function enableTrackInputs() {
     nameInput.disabled = false;
     artistInput.disabled = false;
+    volumeInput.disabled = false;
     for (const key in checkBoxes) checkBoxes[key].disabled = false;
 }
 
 function disableTrackInputs() {
     nameInput.disabled = true;
     artistInput.disabled = true;
+    volumeInput.disabled = true;
     for (const key in checkBoxes) checkBoxes[key].disabled = true;
 }
 
@@ -45,6 +48,7 @@ function disableTrackInputs() {
 // Track input fields
 nameInput.value = "";
 artistInput.value = "";
+volumeInput.value = 1.0;
 for (const key in checkBoxes) {
     checkBoxes[key].checked = false;
 }
@@ -103,6 +107,7 @@ function getLocationsObject(trackName) {
 function saveTrackOptions(trackName) {
     tracksWithOptions[trackName]["name"] = nameInput.value;
     tracksWithOptions[trackName]["artist"] = artistInput.value;
+    tracksWithOptions[trackName]["volume"] = parseFloat(volumeInput.value);
     for (const key in checkBoxes) {
         getLocationsObject(trackName)[key] = checkBoxes[key].checked;
     }
@@ -111,6 +116,7 @@ function saveTrackOptions(trackName) {
 function loadTrackOptions(trackName) {
     nameInput.value = tracksWithOptions[trackName]["name"];
     artistInput.value = tracksWithOptions[trackName]["artist"];
+    volumeInput.value = tracksWithOptions[trackName]["volume"];
     for (const key in getLocationsObject(trackName)) {
         checkBoxes[key].checked = getLocationsObject(trackName)[key];
     }
@@ -120,6 +126,7 @@ function loadTrackOptions(trackName) {
 function clearTrackOptions(trackName) {
     tracksWithOptions[trackName]["name"] = "";
     tracksWithOptions[trackName]["artist"] = "";
+    tracksWithOptions[trackName]["volume"] = 1.0;
     tracksWithOptions[trackName]["locations"] = {};
     for (const key in checkBoxes) {
         getLocationsObject(trackName)[key] = false;
