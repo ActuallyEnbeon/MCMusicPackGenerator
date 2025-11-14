@@ -1,4 +1,6 @@
 // -- Constants --
+const prevPackUpload = document.getElementById("import_pack");
+
 const trackFileUpload = document.getElementById("tracks_upload");
 const trackList = document.getElementById("track_select");
 
@@ -46,6 +48,8 @@ function disableTrackInputs() {
 
 // -- Clear all input fields when first loaded --
 // Track input fields
+prevPackUpload.value = "";
+trackFileUpload.value = "";
 nameInput.value = "";
 artistInput.value = "";
 volumeInput.value = 1.0;
@@ -95,6 +99,11 @@ iconFileUpload.onchange = function() {
 // Pack exporting
 document.getElementById("export_pack").onclick = function() {
     downloadPackZip();
+}
+
+// Pack importing
+prevPackUpload.onchange = function() {
+    readPackZip(prevPackUpload.files[0]);
 }
 
 // -- Track selection --

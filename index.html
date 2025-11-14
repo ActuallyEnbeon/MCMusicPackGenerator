@@ -7,11 +7,13 @@
 <body>
 
 <h1>MC Music Pack Generator</h1>
+<label for="import_pack">Import previous pack (.ZIP)</label>
+<input type="file" id="import_pack" accept=".zip"></button>
+<button id="export_pack">Export current pack</button>
+<br><br>
 <label for="tracks_upload">Upload music tracks (.OGG Vorbis)</label>
-<br>
 <input type="file" id="tracks_upload" accept=".ogg" multiple="true">
 <button id="add_tracks">Add track(s)</button>
-<button id="export_pack">Export pack</button>
 <br><br>
 <div id="options">
     <div id="tracks">
@@ -129,6 +131,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 <script src="packGenerator.js"></script>
+<script src="packReader.js"></script>
 <script src="main.js"></script>
 <link rel="stylesheet" href="main.css">
 </html> 
