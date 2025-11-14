@@ -17,7 +17,6 @@
         <select id="track_select" size="30"></select>
         <div id="track_options_box">
             <div class="heading"><b>Track options</b></div>
-            <!-- TODO: Add track info here i.e. name, artist, volume, etc. -->
             <label for="artist">Artist</label>
             <input type="text" class="artist" id="artist" name="artist">
             <label for="track_name">Name</label>
@@ -91,15 +90,20 @@
                 <input type="checkbox" class="soul_sand_valley" name="soul_sand_valley">
                 <label for="soul_sand_valley">Soul Sand Valley</label><br>
                 <input type="checkbox" class="warped_forest" name="warped_forest">
-                <label for="warped_forest">Warped Forest (?)</label>
+                <label for="warped_forest">Warped Forest</label>
+                <span class="superscript" title="In vanilla, no music plays in the warped forest.">(?)</span>
             </div>
             <br>
-            <input type="checkbox" class="credits" name="credits">
-            <label for="credits">Credits (!)</label><br>
-            <input type="checkbox" class="dragon" name="dragon">
-            <label for="dragon">Dragon (!)</label><br>
             <input type="checkbox" class="end" name="end">
-            <label for="end">The End (!)</label>
+            <label for="end">The End (all biomes)</label><br>
+            <input type="checkbox" class="dragon" name="dragon">
+            <label for="dragon">Dragon</label>
+            <span class="superscript" title="In vanilla, only &quot;C418 - Boss&quot; plays during the Dragon fight.">(!)</span><br>
+            <input type="checkbox" class="credits" name="credits">
+            <label for="credits">Credits</label>
+            <span class="superscript" title="In vanilla, only &quot;C418 - Alpha&quot; plays during the credits.">(!)</span>
+            <br>
+            <!-- TODO: Allow user to add custom sound events (advanced) -->
         </div>
     </div>
     <div id="pack_options">
@@ -110,9 +114,9 @@
         <input type="text" class="desc" id="desc" name="desc"><br>
         <!-- TODO: Make these MC version selectors instead (maybe include the format selectors as an "advanced" option) -->
         <label for="min_format">Min format</label>
-        <input type="number" min="1" max="69.0" class="min_format" id="min_format" name="min_format">
+        <input type="number" min="2" max="69.0" class="min_format" id="min_format" name="min_format">
         <label for="max_format">Max format</label>
-        <input type="number" min="1" max="69.0" class="max_format" id="max_format" name="max_format"><br>
+        <input type="number" min="2" max="69.0" class="max_format" id="max_format" name="max_format"><br>
         <br>
         <label for="pack_icon_upload">Upload pack icon (.PNG)</label>
         <input type="file" id="pack_icon_upload" accept=".png">

@@ -2,6 +2,11 @@
   font-size: larger;
 }
 
+.superscript {
+  font-size: smaller;
+  vertical-align: super;
+}
+
 .collapsible_content {
   padding: 0 18px;
   display: none;
