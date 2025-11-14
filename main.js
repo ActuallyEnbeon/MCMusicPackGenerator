@@ -80,7 +80,7 @@ document.getElementById("add_tracks").onclick = function() {
 }
 
 // Pack icon uploading
-document.getElementById("upload_icon").onclick = function() {
+iconFileUpload.onchange = function() {
     let file = iconFileUpload.files[0];
     if (file) {
         // use FileReader to generate preview image

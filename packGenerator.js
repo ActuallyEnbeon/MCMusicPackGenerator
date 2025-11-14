@@ -1,4 +1,3 @@
-// -- Functions --
 function downloadPackZip() {
     let zip = new JSZip();
 
