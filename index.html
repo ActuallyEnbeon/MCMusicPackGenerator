@@ -7,13 +7,14 @@
 
 <body>
 <h1>MC Music Pack Generator</h1>
-<label for="import_pack">Import previous pack (.ZIP)</label>
+<label for="import_pack">Import pack (.ZIP)</label>
 <input type="file" id="import_pack" accept=".zip"></button>
 <button id="export_pack">Export current pack</button>
+<input type="checkbox" id="advanced_mode">
+<label for="advanced_mode">Advanced mode</label>
 <br><br>
 <label for="tracks_upload">Upload music tracks (.OGG Vorbis)</label>
 <input type="file" id="tracks_upload" accept=".ogg" multiple="true">
-<button id="add_tracks">Add track(s)</button>
 <br><br>
 <div id="options">
     <div id="tracks">
@@ -28,7 +29,7 @@
             <input type="number" min="0.0" max="3.0" step="0.1" class="volume" id="volume" name="volume"><br>
             <!-- TODO: Add button to remove track from pack -->
             <br>
-            <!-- TODO: Add weights option to each selection below -->
+            <!-- TODO: Add weights option to each selection below, when in advanced mode -->
             <div class="heading"><b>Locations</b></div>
             <input type="checkbox" class="game" name="game">
             <label for="game">Overworld (all biomes)</label><br>
@@ -117,10 +118,19 @@
         <label for="desc">Description</label>
         <input type="text" class="desc" id="desc" name="desc"><br>
         <!-- TODO: Make these MC version selectors instead (maybe include the format selectors as an "advanced" option) -->
-        <label for="min_format">Min format</label>
-        <input type="number" min="2" max="69.0" class="min_format" id="min_format" name="min_format">
-        <label for="max_format">Max format</label>
-        <input type="number" min="2" max="69.0" class="max_format" id="max_format" name="max_format"><br>
+        <label for="min_version">Min version</label>
+        <select id="min_version" name="min_version"></select>
+        <label for="max_version">Max version</label>
+        <select id="max_version" name="max_version"></select>
+        <span class="superscript cursor_help" title="Unfortunately, this tool doesn't support game versions before 1.9.">(?)</span>
+        <br>
+        <div id="format_specifiers_advanced" class="hidden">
+            <label for="min_format">Min format</label>
+            <input type="number" min="2" max="69.0" id="min_format" name="min_format">
+            <label for="max_format">Max format</label>
+            <input type="number" min="2" max="69.0" id="max_format" name="max_format">
+            <br>
+        </div>
         <br>
         <label for="pack_icon_upload">Upload pack icon (.PNG)</label>
         <input type="file" id="pack_icon_upload" accept=".png">
@@ -135,5 +145,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 <script src="packGenerator.js"></script>
 <script src="packReader.js"></script>
+<script src="versionSelectors.js"></script>
 <script src="main.js"></script>
 </html>

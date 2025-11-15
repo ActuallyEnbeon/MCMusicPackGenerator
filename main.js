@@ -1,15 +1,17 @@
 // -- Constants --
-const prevPackUpload = document.getElementById("import_pack");
+const packUploadInput = document.getElementById("import_pack");
+
+const advancedModeToggle = document.getElementById("advanced_mode");
 
 const trackFileUpload = document.getElementById("tracks_upload");
 const trackList = document.getElementById("track_select");
-
-const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
 const trackOptionsBox = document.getElementById("track_options_box");
 const nameInput = document.getElementById("track_name");
 const artistInput = document.getElementById("artist");
 const volumeInput = document.getElementById("volume");
+
+const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
 const checkBoxes = {};
 for (const option of trackOptionsBox.children) {
@@ -56,7 +58,7 @@ function clearAllInputs() {
         checkBoxes[key].checked = false;
     }
     // Pack input fields
-    prevPackUpload.value = "";
+    packUploadInput.value = "";
     for (const key in packOptions.children) {
         let element = packOptions.children[key];
         if (element.nodeName == "INPUT") {
@@ -64,6 +66,8 @@ function clearAllInputs() {
         }
     }
     iconFileUpload.onchange();
+    // Other input fields
+    advancedModeToggle.checked = false;
 }
 
 function addFileToTrackList(file) {
@@ -76,8 +80,14 @@ function addFileToTrackList(file) {
 }
 
 // -- Interaction behaviour --
+// Advanced mode toggle
+advancedModeToggle.onchange = function() {
+    let checked = advancedModeToggle.checked;
+    document.getElementById("format_specifiers_advanced").classList.toggle("hidden");
+}
+
 // Track uploading
-document.getElementById("add_tracks").onclick = function() {
+trackFileUpload.onchange = function() {
     // Add all files to trackList
     for (const file of trackFileUpload.files) {
         addFileToTrackList(file);
@@ -115,8 +125,8 @@ document.getElementById("export_pack").onclick = function() {
 }
 
 // Pack importing
-prevPackUpload.onchange = function() {
-    readPackZip(prevPackUpload.files[0]);
+packUploadInput.onchange = function() {
+    readPackZip(packUploadInput.files[0]);
 }
 
 // -- Track selection --
@@ -187,3 +197,6 @@ for (const toggle of collapsibleToggles) {
 clearAllInputs();
 trackList.innerHTML = "";
 disableTrackInputs();
+
+// Populate version inputs
+populateVersionInputs();
