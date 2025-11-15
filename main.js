@@ -46,23 +46,24 @@ function disableTrackInputs() {
     for (const key in checkBoxes) checkBoxes[key].disabled = true;
 }
 
-// -- Clear all input fields when first loaded --
-// Track input fields
-prevPackUpload.value = "";
-trackFileUpload.value = "";
-nameInput.value = "";
-artistInput.value = "";
-volumeInput.value = 1.0;
-for (const key in checkBoxes) {
-    checkBoxes[key].checked = false;
-}
-disableTrackInputs();
-// Pack input fields
-for (const key in packOptions.children) {
-    let element = packOptions.children[key];
-    if (element.nodeName == "INPUT") {
-        element.value = "";
+function clearAllInputs() {
+    // Track input fields
+    trackFileUpload.value = "";
+    nameInput.value = "";
+    artistInput.value = "";
+    volumeInput.value = 1.0;
+    for (const key in checkBoxes) {
+        checkBoxes[key].checked = false;
     }
+    // Pack input fields
+    prevPackUpload.value = "";
+    for (const key in packOptions.children) {
+        let element = packOptions.children[key];
+        if (element.nodeName == "INPUT") {
+            element.value = "";
+        }
+    }
+    iconFileUpload.onchange();
 }
 
 // -- Interaction behaviour --
@@ -93,7 +94,15 @@ iconFileUpload.onchange = function() {
             document.getElementById("icon_preview").src = e.target.result;
         };
         reader.readAsDataURL(file);
+    } else {
+        document.getElementById("icon_preview").src = "";
     }
+}
+
+// Pack icon clearing
+document.getElementById("clear_pack_icon").onclick = function() {
+    iconFileUpload.value = "";
+    iconFileUpload.onchange();
 }
 
 // Pack exporting
@@ -168,3 +177,9 @@ for (const toggle of collapsibleToggles) {
         }
     }
 }
+
+// -- Bare code --
+// Clear all fields when first loaded
+clearAllInputs();
+trackList.value = "";
+disableTrackInputs();
