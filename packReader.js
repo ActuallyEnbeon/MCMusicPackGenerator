@@ -18,6 +18,7 @@ function readPackZip(pack) {
             zip.file("pack.mcmeta").async("string").then(function(data) {
                 let packMCMETA = JSON.parse(data)["pack"];
                 document.getElementById("desc").value = packMCMETA["description"];
+                // TODO: account for old pack format params
                 document.getElementById("min_format").value = packMCMETA["min_format"];
                 document.getElementById("max_format").value = packMCMETA["max_format"];
             });
@@ -76,7 +77,7 @@ function readPackZip(pack) {
             });
         } catch (e) {
             console.error(e);
-            alert("Error: Could not read pack file \"" + pack.name + "\". It may be corrupted or formatted incorrectly.");
+            alert("Error: Could not read pack file \"" + pack.name + "\". It may be formatted incorrectly or corrupted.");
         }
     });
 }

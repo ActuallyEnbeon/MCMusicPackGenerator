@@ -7,6 +7,10 @@
   vertical-align: super;
 }
 
+.cursor_help {
+  cursor: help;
+}
+
 .collapsible_content {
   padding: 0 18px;
   display: none;
