@@ -51,7 +51,7 @@ function readPackZip(pack) {
                         for (const key in soundsJSON) {
                             let thisEventList = soundsJSON[key]["sounds"];
                             for (const soundObj of thisEventList) {
-                                if (soundObj["name"] != filepath && soundObj["name"] != "minecraft:" + filepath) return;
+                                if (soundObj["name"] != filepath && soundObj["name"] != "minecraft:" + filepath) continue;
                                 // Set the locations list
                                 let bareSoundEventName = key.split(".").at(-1);
                                 getLocationsObject(filename)[bareSoundEventName] = true;
