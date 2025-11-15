@@ -66,17 +66,21 @@ function clearAllInputs() {
     iconFileUpload.onchange();
 }
 
+function addFileToTrackList(file) {
+    var option = document.createElement("option");
+    option.name = option.textContent = file.name;
+    trackList.appendChild(option);
+    trackFiles[option.name] = file;
+    tracksWithOptions[option.name] = {};
+    clearTrackOptions(option.name);
+}
+
 // -- Interaction behaviour --
 // Track uploading
 document.getElementById("add_tracks").onclick = function() {
     // Add all files to trackList
     for (const file of trackFileUpload.files) {
-        var option = document.createElement("option");
-        option.name = option.textContent = file.name;
-        trackList.appendChild(option);
-        trackFiles[option.name] = file;
-        tracksWithOptions[option.name] = {};
-        clearTrackOptions(option.name);
+        addFileToTrackList(file);
          // TODO: Try autoloading track info from metadata
     }
 
@@ -181,5 +185,5 @@ for (const toggle of collapsibleToggles) {
 // -- Bare code --
 // Clear all fields when first loaded
 clearAllInputs();
-trackList.value = "";
+trackList.innerHTML = "";
 disableTrackInputs();

@@ -35,8 +35,12 @@ function downloadPackZip() {
         let volume = tracksWithOptions[key]["volume"];
         let locations = tracksWithOptions[key]["locations"];
 
+        // Format the name and artist safely for use in data files
+        let safeName = name.replaceAll(" ", "_").toLowerCase();
+        let safeArtist = artist.replaceAll(" ", "_").toLowerCase();
+
         // Save .ogg first
-        musicFolder.folder(artist).file(name + ".ogg", trackFiles[key]);
+        musicFolder.folder(safeArtist).file(safeName + ".ogg", trackFiles[key]);
 
         // Next, update soundsFile
         // For each location...
@@ -57,7 +61,7 @@ function downloadPackZip() {
 
             // Add this track to the soundsFile at the soundEvent
             let soundData = {
-                "name": "minecraft:music/" + artist + "/" + name,
+                "name": "minecraft:music/" + safeArtist + "/" + safeName,
                 "stream": true,
             };
             if (volume != 1) soundData["volume"] = volume;
@@ -67,7 +71,7 @@ function downloadPackZip() {
         }
 
         // Last, update langFile
-        langFile["music." + artist + "." + name] = artist + " - " + name
+        langFile["music." + safeArtist + "." + safeName] = artist + " - " + name;
     }
     // Next, add soundsFile and langFile to the zip
     assetsFolder.file("sounds.json", JSON.stringify(soundsFile));
