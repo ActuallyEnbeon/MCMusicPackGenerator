@@ -42,6 +42,11 @@
     min-width: 40em;
 }
 
+#delete_track {
+  float: right;
+  margin-right: 1em;
+}
+
 #pack_options {
     border: 1px solid black;
     vertical-align: top;

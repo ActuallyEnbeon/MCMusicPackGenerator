@@ -48,8 +48,7 @@ function disableTrackInputs() {
     for (const key in checkBoxes) checkBoxes[key].disabled = true;
 }
 
-function clearAllInputs() {
-    // Track input fields
+function clearTrackInputs() {
     trackFileUpload.value = "";
     nameInput.value = "";
     artistInput.value = "";
@@ -57,6 +56,11 @@ function clearAllInputs() {
     for (const key in checkBoxes) {
         checkBoxes[key].checked = false;
     }
+}
+
+function clearAllInputs() {
+    // Track input fields
+    clearTrackInputs();
     // Pack input fields
     packUploadInput.value = "";
     for (const key in packOptions.children) {
@@ -90,12 +94,28 @@ advancedModeToggle.onchange = function() {
 trackFileUpload.onchange = function() {
     // Add all files to trackList
     for (const file of trackFileUpload.files) {
+        if (file.name in trackFiles) {
+            alert("Error while uploading tracks: A track named \"" + file.name + "\" is already in the pack.");
+            continue;
+        }
         addFileToTrackList(file);
          // TODO: Try autoloading track info from metadata
     }
 
     // Clear the file upload field
     trackFileUpload.value = null;
+}
+
+// Track deletion
+document.getElementById("delete_track").onclick = function() {
+    // Remove the track from the list
+    trackList.removeChild(trackList[trackList.selectedIndex]);
+    delete trackFiles[currentSelectedTrack];
+    delete tracksWithOptions[currentSelectedTrack];
+    currentSelectedTrack = undefined;
+    // Now as there is no selected track, clear and disable the track inputs
+    clearTrackInputs();
+    disableTrackInputs();
 }
 
 // Pack icon uploading
