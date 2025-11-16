@@ -90,6 +90,15 @@ function downloadPackZip() {
         let volume = tracksWithOptions[key]["volume"];
         let events = tracksWithOptions[key]["events"];
 
+        if (!name) {
+            alert("Error while exporting: Track \"" + key + "\" does not have a name.");
+            return;
+        }
+        if (!artist) {
+            alert("Error while exporting: Track \"" + key + "\" does not have an artist.");
+            return;
+        }
+
         // Format the name and artist safely for use in data files
         let safeName = name.replaceAll(" ", "_").toLowerCase();
         let safeArtist = artist.replaceAll(" ", "_").toLowerCase();
@@ -149,6 +158,7 @@ function downloadPackZip() {
     // Finally, download the created zip
     zip.generateAsync({type:"blob"})
         .then(function (blob) {
-            saveAs(blob, document.getElementById("pack_name").value + ".zip");
+            let packName = document.getElementById("pack_name").value;
+            saveAs(blob, (packName ? packName : "pack") + ".zip");
         });
 }
