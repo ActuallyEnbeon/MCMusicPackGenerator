@@ -100,7 +100,10 @@ function readPackZip(pack) {
                                 if (soundObj["name"] != filepath && soundObj["name"] != "minecraft:" + filepath) continue;
                                 // Set the events list
                                 let bareSoundEventName = key.split(".").at(-1);
-                                getEventsObject(filename)[bareSoundEventName] = true;
+                                // Add event to list only if it has an associated checkbox
+                                if (bareSoundEventName in checkBoxes) {
+                                    getEventsObject(filename)[bareSoundEventName] = true;
+                                }
                                 // And get the sound's volume if it's not 1
                                 let newVolume = soundObj["volume"];
                                 if (volume == 1.0 && newVolume != undefined && newVolume != 1.0) {

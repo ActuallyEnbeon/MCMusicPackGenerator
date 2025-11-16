@@ -26,6 +26,14 @@ function getValidatedPackObject() {
     return packFile;
 }
 
+function shouldIncludeOldNether(eventkey, minFormat) {
+    return (eventkey == "nether_wastes" && minFormat <= 5);
+}
+
+function shouldIncludeOldJungleAndForest(eventkey, minFormat) {
+    return (["forest", "flower_forest", "jungle", "sparse_jungle", "bamboo_jungle"].includes(eventkey) && minFormat < 15);
+}
+
 // -- Main function --
 function downloadPackZip() {
     let zip = new JSZip();
@@ -36,6 +44,8 @@ function downloadPackZip() {
     } catch (e) {
         return;
     }
+
+    let minFormat = packFile["pack"]["min_format"];
 
     zip.file("pack.mcmeta", JSON.stringify(packFile));
 
@@ -83,9 +93,13 @@ function downloadPackZip() {
             // Create the soundEvent if it doesn't exist
             if (soundsFile[soundEvent] == undefined) {
                 soundsFile[soundEvent] = {"sounds": []};
-                // Special case for nether in older versions
-                if (eventkey == "nether_wastes") {
+                // Special case for nether before 1.16
+                if (shouldIncludeOldNether(eventkey, minFormat)) {
                     soundsFile["music.nether"] = {"sounds": []};
+                }
+                // Special case for jungle & forest in 1.19.X
+                if (shouldIncludeOldJungleAndForest(eventkey, minFormat)) {
+                    soundsFile["music.overworld.jungle_and_forest"] = {"sounds": []};
                 }
             }
 
@@ -98,9 +112,13 @@ function downloadPackZip() {
             // TODO: other attributes
 
             soundsFile[soundEvent]["sounds"].push(soundData);
-            // Special case for nether in older versions
-            if (eventkey == "nether_wastes") {
+            // Special case for nether before 1.16
+            if (shouldIncludeOldNether(eventkey, minFormat)) {
                 soundsFile["music.nether"]["sounds"].push(soundData);
+            }
+            // Special case for jungle & forest in 1.19.X
+            if (shouldIncludeOldJungleAndForest(eventkey, minFormat)) {
+                soundsFile["music.overworld.jungle_and_forest"]["sounds"].push(soundData);
             }
         }
 
