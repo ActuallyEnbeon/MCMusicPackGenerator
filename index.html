@@ -30,7 +30,7 @@
             <input type="number" min="0.0" max="3.0" step="0.1" class="volume" id="volume" name="volume"><br>
             <br>
             <!-- TODO: Add weights option to each selection below, when in advanced mode -->
-            <div class="heading"><b>Locations</b></div>
+            <div class="heading"><b>Events</b></div>
             <input type="checkbox" class="game" name="game">
             <label for="game">Overworld (all biomes)</label><br>
             <input type="checkbox" class="creative" name="creative">
@@ -41,6 +41,9 @@
             <label for="under_water">Underwater</label>
             <br>
             <label for="overworld_biomes"><b>Overworld biomes</b></label>
+            <span class="superscript cursor_help" title=
+            "These events are not present in versions prior to 1.18. To make music play in the Overworld in earlier versions, &quot;Overworld (all biomes)&quot; must be checked above."
+            >(?)</span>
             <button id="overworld_biomes" class="collapsible_toggle">Show</button>
             <div class="collapsible_content" name="overworld">
                 <input type="checkbox" class="badlands" name="badlands">
@@ -84,6 +87,9 @@
             </div>
             <br>
             <label for="nether_biomes"><b>Nether biomes</b></label>
+            <span class="superscript cursor_help" title=
+            "These events are not present in versions prior to 1.16. To make music play in the Nether in earlier versions, &quot;Nether Wastes&quot; must be checked."
+            >(?)</span>
             <button id="nether_biomes" class="collapsible_toggle">Show</button>
             <div class="collapsible_content" name="nether">
                 <input type="checkbox" class="basalt_deltas" name="basalt_deltas">
@@ -96,17 +102,17 @@
                 <label for="soul_sand_valley">Soul Sand Valley</label><br>
                 <input type="checkbox" class="warped_forest" name="warped_forest">
                 <label for="warped_forest">Warped Forest</label>
-                <span class="superscript cursor_help" title="In vanilla, no music plays in the Warped Forest.">(?)</span>
+                <span class="superscript cursor_help" title="In vanilla, no music plays in the Warped Forest.">(i)</span>
             </div>
             <br>
             <input type="checkbox" class="end" name="end">
             <label for="end">The End (all biomes)</label><br>
             <input type="checkbox" class="dragon" name="dragon">
             <label for="dragon">Dragon</label>
-            <span class="superscript cursor_help" title="In vanilla, only &quot;C418 - Boss&quot; plays during the Dragon fight.">(!)</span><br>
+            <span class="superscript cursor_help" title="In vanilla, only &quot;C418 - Boss&quot; plays during the Dragon fight.">(i)</span><br>
             <input type="checkbox" class="credits" name="credits">
             <label for="credits">Credits</label>
-            <span class="superscript cursor_help" title="In vanilla, only &quot;C418 - Alpha&quot; plays during the credits.">(!)</span>
+            <span class="superscript cursor_help" title="In vanilla, only &quot;C418 - Alpha&quot; plays during the credits.">(i)</span>
             <br>
             <!-- TODO: Allow user to add custom sound events (advanced) -->
         </div>

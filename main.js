@@ -10,6 +10,7 @@ const trackOptionsBox = document.getElementById("track_options_box");
 const nameInput = document.getElementById("track_name");
 const artistInput = document.getElementById("artist");
 const volumeInput = document.getElementById("volume");
+const deleteTrackButton = document.getElementById("delete_track");
 
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
@@ -39,6 +40,7 @@ function enableTrackInputs() {
     artistInput.disabled = false;
     volumeInput.disabled = false;
     for (const key in checkBoxes) checkBoxes[key].disabled = false;
+    deleteTrackButton.disabled = false;
 }
 
 function disableTrackInputs() {
@@ -46,6 +48,7 @@ function disableTrackInputs() {
     artistInput.disabled = true;
     volumeInput.disabled = true;
     for (const key in checkBoxes) checkBoxes[key].disabled = true;
+    deleteTrackButton.disabled = true;
 }
 
 function clearTrackInputs() {
@@ -107,7 +110,7 @@ trackFileUpload.onchange = function() {
 }
 
 // Track deletion
-document.getElementById("delete_track").onclick = function() {
+deleteTrackButton.onclick = function() {
     // Remove the track from the list
     trackList.removeChild(trackList[trackList.selectedIndex]);
     delete trackFiles[currentSelectedTrack];
@@ -152,8 +155,8 @@ packUploadInput.onchange = function() {
 // -- Track selection --
 var currentSelectedTrack;
 
-function getLocationsObject(trackName) {
-    return tracksWithOptions[trackName]["locations"];
+function getEventsObject(trackName) {
+    return tracksWithOptions[trackName]["events"];
 }
 
 function saveTrackOptions(trackName) {
@@ -161,7 +164,7 @@ function saveTrackOptions(trackName) {
     tracksWithOptions[trackName]["artist"] = artistInput.value;
     tracksWithOptions[trackName]["volume"] = parseFloat(volumeInput.value);
     for (const key in checkBoxes) {
-        getLocationsObject(trackName)[key] = checkBoxes[key].checked;
+        getEventsObject(trackName)[key] = checkBoxes[key].checked;
     }
 }
 
@@ -169,8 +172,8 @@ function loadTrackOptions(trackName) {
     nameInput.value = tracksWithOptions[trackName]["name"];
     artistInput.value = tracksWithOptions[trackName]["artist"];
     volumeInput.value = tracksWithOptions[trackName]["volume"];
-    for (const key in getLocationsObject(trackName)) {
-        checkBoxes[key].checked = getLocationsObject(trackName)[key];
+    for (const key in getEventsObject(trackName)) {
+        checkBoxes[key].checked = getEventsObject(trackName)[key];
     }
     enableTrackInputs();
 }
@@ -179,9 +182,9 @@ function clearTrackOptions(trackName) {
     tracksWithOptions[trackName]["name"] = "";
     tracksWithOptions[trackName]["artist"] = "";
     tracksWithOptions[trackName]["volume"] = 1.0;
-    tracksWithOptions[trackName]["locations"] = {};
+    tracksWithOptions[trackName]["events"] = {};
     for (const key in checkBoxes) {
-        getLocationsObject(trackName)[key] = false;
+        getEventsObject(trackName)[key] = false;
     }
 }
 

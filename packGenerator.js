@@ -61,7 +61,7 @@ function downloadPackZip() {
         let name = tracksWithOptions[key]["name"];
         let artist = tracksWithOptions[key]["artist"];
         let volume = tracksWithOptions[key]["volume"];
-        let locations = tracksWithOptions[key]["locations"];
+        let events = tracksWithOptions[key]["events"];
 
         // Format the name and artist safely for use in data files
         let safeName = name.replaceAll(" ", "_").toLowerCase();
@@ -71,19 +71,21 @@ function downloadPackZip() {
         musicFolder.folder(safeArtist).file(safeName + ".ogg", trackFiles[key]);
 
         // Next, update soundsFile
-        // For each location...
-        for (const lockey in locations) {
+        // For each event...
+        for (const eventkey in events) {
             // If this track does not play here, skip
-            if (!locations[lockey]) { continue; }
+            if (!events[eventkey]) { continue; }
 
-            // Get the soundEvent for this location
-            let subname = checkBoxes[lockey].parentElement.getAttribute("name");
-            let soundEvent = "music." + (subname == undefined ? "" : subname + ".") + lockey;
+            // Get the soundEvent name for this event
+            let subname = checkBoxes[eventkey].parentElement.getAttribute("name");
+            let soundEvent = "music." + (subname == undefined ? "" : subname + ".") + eventkey;
 
             // Create the soundEvent if it doesn't exist
             if (soundsFile[soundEvent] == undefined) {
-                soundsFile[soundEvent] = {
-                    "sounds": []
+                soundsFile[soundEvent] = {"sounds": []};
+                // Special case for nether in older versions
+                if (eventkey == "nether_wastes") {
+                    soundsFile["music.nether"] = {"sounds": []};
                 }
             }
 
@@ -95,7 +97,11 @@ function downloadPackZip() {
             if (volume != 1) soundData["volume"] = volume;
             // TODO: other attributes
 
-            soundsFile[soundEvent]["sounds"].push(soundData)
+            soundsFile[soundEvent]["sounds"].push(soundData);
+            // Special case for nether in older versions
+            if (eventkey == "nether_wastes") {
+                soundsFile["music.nether"]["sounds"].push(soundData);
+            }
         }
 
         // Last, update langFile
