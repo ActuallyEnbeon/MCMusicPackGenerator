@@ -77,7 +77,7 @@ function downloadPackZip() {
             if (!locations[lockey]) { continue; }
 
             // Get the soundEvent for this location
-            let subname = checkBoxes[lockey].parentElement.classList[1]; // TODO: this is jank
+            let subname = checkBoxes[lockey].parentElement.getAttribute("name");
             let soundEvent = "music." + (subname == undefined ? "" : subname + ".") + lockey;
 
             // Create the soundEvent if it doesn't exist
