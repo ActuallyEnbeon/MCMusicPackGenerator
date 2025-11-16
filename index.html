@@ -130,14 +130,18 @@
         <select id="max_version" name="max_version"></select>
         <span class="superscript cursor_help" title="Unfortunately, this tool doesn't support game versions before 1.9.">(?)</span>
         <span class="superscript cursor_help" title=
-        "Please note that due to the way pack formats are defined, Minecraft may claim music packs are incompatible even for game versions within the selected range."
+        "Please note that due to the way pack formats are defined, Minecraft may warn that a pack is incompatible even for game versions within the selected range."
         >(i)</span>
         <br>
         <div id="format_specifiers_advanced" class="hidden">
             <label for="min_format">Min format</label>
-            <input type="number" min="2" max="70.0" step="0.1" id="min_format" name="min_format">
+            <input type="number" min="2" max="70" step="1" id="min_format" name="min_format">
+            <span>.</span>
+            <input type="number" min="0" step="1" id="min_format_minor" name="min_format_minor">
             <label for="max_format">Max format</label>
-            <input type="number" min="2" max="70.0" step="0.1" id="max_format" name="max_format">
+            <input type="number" min="2" max="70" step="1" id="max_format" name="max_format">
+            <span>.</span>
+            <input type="number" min="0" step="1" id="max_format_minor" name="max_format_minor">
             <br>
         </div>
         <br>

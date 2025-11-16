@@ -61,6 +61,10 @@ body {
   min-width: 31em;
 }
 
+#min_format, #max_format, #min_format_minor, #max_format_minor {
+  max-width: 3em;
+}
+
 #icon_preview {
   max-width: 10em;
 }

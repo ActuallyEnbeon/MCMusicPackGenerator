@@ -1,36 +1,50 @@
 // -- Helper functions --
 function getValidatedPackObject() {
-    let minFormat = parseFloat(minFormatInput.value);
-    let maxFormat = parseFloat(maxFormatInput.value);
+    let minFormat = parseInt(minFormatInput.value);
+    let minFormatMinor = parseInt(minFormatInputMinor.value);
+    let maxFormat = parseInt(maxFormatInput.value);
+    let maxFormatMinor = parseInt(maxFormatInputMinor.value);
 
-    if (maxFormat < minFormat) {
+    if (maxFormat < minFormat || (maxFormat == minFormat && maxFormatMinor < minFormatMinor)) {
         let minVersion = minVersionInput.value;
         let maxVersion = maxVersionInput.value;
-        alert("Error while exporting: The max version (" + maxVersion + ") should be the same as or later than the min version (" + minVersion +").");
-        throw new Error("Max format " + maxFormat + " should be greater than or equal to min format " + minFormat);
+        // If minVersion and maxVersion are valid versions, name them
+        if (minVersion && maxVersion) {
+            alert("Error while exporting: The max version (" + maxVersion + ") should be the same as or later than the min version (" + minVersion +").");
+        // Otherwise name the selected pack formats
+        } else {
+            alert(
+                "Error while exporting: The max format (" + maxFormat + "." + maxFormatMinor +") " +
+                "should be the same as or greater than the min format (" +  minFormat + "." + minFormatMinor + ")."
+            );
+        }
+        throw new Error("Max format " + maxFormat + "." + maxFormatMinor + " should be greater than or equal to min format " + minFormat + "." + minFormatMinor);
     }
 
     let packFile = {"pack": {"description": document.getElementById("desc").value}};
     let packFileObj = packFile["pack"];
 
+    // TODO: Minecraft >1.20.2 claims pack is incompatible if minFormat < 15 - how to fix?
     if (minFormat < 65) {
         packFileObj["pack_format"] = minFormat;
         packFileObj["supported_formats"] = {"min_inclusive": minFormat, "max_inclusive": maxFormat};
     }
 
     if (maxFormat >= 65) {
-        packFileObj["min_format"] = minFormat;
-        packFileObj["max_format"] = maxFormat;
+        packFileObj["min_format"] = [minFormat, minFormatMinor];
+        packFileObj["max_format"] = [maxFormat, maxFormatMinor];
     }
 
     return packFile;
 }
 
 function shouldIncludeOldNether(eventkey, minFormat) {
+    if (minFormat[0] != undefined) minFormat = minFormat[0];
     return (eventkey == "nether_wastes" && minFormat <= 5);
 }
 
 function shouldIncludeOldJungleAndForest(eventkey, minFormat) {
+    if (minFormat[0] != undefined) minFormat = minFormat[0];
     return (["forest", "flower_forest", "jungle", "sparse_jungle", "bamboo_jungle"].includes(eventkey) && minFormat < 15);
 }
 
@@ -46,6 +60,9 @@ function downloadPackZip() {
     }
 
     let minFormat = packFile["pack"]["min_format"];
+    if (minFormat == undefined) {
+        minFormat = packFile["pack"]["pack_format"];
+    }
 
     zip.file("pack.mcmeta", JSON.stringify(packFile));
 

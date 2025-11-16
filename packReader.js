@@ -55,9 +55,20 @@ function readPackZip(pack) {
                 // Description
                 document.getElementById("desc").value = packMCMETA["description"];
                 // Pack formats
-                let formats = getFormats(packMCMETA);
-                minFormatInput.value = formats[0];
-                maxFormatInput.value = formats[1];
+                let [minFormat, maxFormat] = getFormats(packMCMETA);
+                // Need to check for either int or int-array
+                if (minFormat[0] == undefined) {
+                    minFormatInput.value = minFormat;
+                } else {
+                    minFormatInput.value = minFormat[0];
+                    minFormatInputMinor.value = minFormat[1];
+                }
+                if (maxFormat[0] == undefined) {
+                    maxFormatInput.value = maxFormat;
+                } else {
+                    maxFormatInput.value = maxFormat[0];
+                    maxFormatInputMinor.value = maxFormat[1];
+                }
                 // And flush to the version selectors
                 minFormatInput.onchange();
                 maxFormatInput.onchange();

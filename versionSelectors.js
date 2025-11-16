@@ -3,7 +3,9 @@ const minVersionInput = document.getElementById("min_version");
 const maxVersionInput = document.getElementById("max_version");
 
 const minFormatInput = document.getElementById("min_format");
+const minFormatInputMinor = document.getElementById("min_format_minor");
 const maxFormatInput = document.getElementById("max_format");
+const maxFormatInputMinor = document.getElementById("max_format_minor");
 
 // -- Functions --
 function populateVersionInputs() {
@@ -26,6 +28,23 @@ function populateVersionInputs() {
     maxVersionInput.onchange();
 }
 
+function areFormatsEqual(format1, format2) {
+    // If both formats are single integers, compare directly
+    if (format1[0] == undefined && format2[0] == undefined) {
+        return (format1 == format2);
+    }
+    // Otherwise, format them as arrays
+    if (format1[0] == undefined) format1 = [format1, 0];
+    if (format2[0] == undefined) format2 = [format2, 0];
+    // And compare
+    return (
+        format1.length == format2.length
+        && format1.length == 2
+        && format1[0] == format2[0]
+        && format1[1] == format2[1]
+    );
+}
+
 function getFormatFromVersion(version) {
     let obj = simpleVersionList.find((e) => e["versions"].includes(version));
     if (obj == undefined) {
@@ -36,7 +55,7 @@ function getFormatFromVersion(version) {
 
 // if getMax is true, gets max version in range -- if false, gets min version in range
 function getVersionFromFormat(format, getMax) {
-    let obj = simpleVersionList.find((e) => e["format"] == format);
+    let obj = simpleVersionList.find((e) => areFormatsEqual(e["format"], format));
     if (obj == undefined) {
         throw new Error("Could not find game versions for pack format " + format);
     }
@@ -46,12 +65,24 @@ function getVersionFromFormat(format, getMax) {
 // -- Interaction behaviour --
 // Make version selectors affect format selectors
 minVersionInput.onchange = function () {
-    minFormatInput.value = getFormatFromVersion(minVersionInput.value);
+    let format = getFormatFromVersion(minVersionInput.value);
+    if (format[0] == undefined) {
+        minFormatInput.value = format;
+    } else {
+        minFormatInput.value = format[0];
+        minFormatInputMinor.value = format[1];
+    }
     minFormatInput.oninput();
 }
 
 maxVersionInput.onchange = function () {
-    maxFormatInput.value = getFormatFromVersion(maxVersionInput.value);
+    let format = getFormatFromVersion(maxVersionInput.value);
+    if (format[0] == undefined) {
+        maxFormatInput.value = format;
+    } else {
+        maxFormatInput.value = format[0];
+        maxFormatInputMinor.value = format[1];
+    }
     maxFormatInput.oninput();
 }
 
@@ -59,38 +90,38 @@ maxVersionInput.onchange = function () {
 minFormatInput.onchange = function () {
     minFormatInput.oninput();
     try {
-        minVersionInput.value = getVersionFromFormat(minFormatInput.value);
+        minVersionInput.value = getVersionFromFormat(
+            [minFormatInput.value, minFormatInputMinor.value], false
+        );
     } catch (e) {
         minVersionInput.value = "";
     }
 }
 
+minFormatInputMinor.onchange = minFormatInput.onchange
+
 maxFormatInput.onchange = function () {
     maxFormatInput.oninput();
     try {
-        maxVersionInput.value = getVersionFromFormat(maxFormatInput.value, true);
+        maxVersionInput.value = getVersionFromFormat(
+            [maxFormatInput.value, maxFormatInputMinor.value], true
+        );
     } catch (e) {
         maxVersionInput.value = "";
     }
 }
 
+maxFormatInputMinor.onchange = maxFormatInput.onchange
+
 // Make format selectors correctly change to minor versions at format 65.0
 minFormatInput.oninput = function () {
-    if (minFormatInput.value >= 65) {
-        minFormatInput.step = 0.1;
-    } else {
-        minFormatInput.step = 1;
-        if (minFormatInput.value > 64) minFormatInput.value = 64;
-    }
+    minFormatInputMinor.disabled = (minFormatInput.value < 65);
+    if (minFormatInput.value < 65) minFormatInputMinor.value = 0;
 }
 
 maxFormatInput.oninput = function () {
-    if (minFormatInput.value >= 65) {
-        minFormatInput.step = 0.1;
-    } else {
-        minFormatInput.step = 1;
-        if (minFormatInput.value > 64) minFormatInput.value = 64;
-    }
+    maxFormatInputMinor.disabled = (maxFormatInput.value < 65);
+    if (maxFormatInput.value < 65) maxFormatInputMinor.value = 0;
 }
 
 // -- Version map --
@@ -115,5 +146,5 @@ const simpleVersionList = [
     {"format": 55, "versions": ["1.21.5"]},
     {"format": 63, "versions": ["1.21.6"]},
     {"format": 64, "versions": ["1.21.7", "1.21.8"]},
-    {"format": 69.0, "versions": ["1.21.9", "1.21.10"]},
+    {"format": [69, 0], "versions": ["1.21.9", "1.21.10"]},
 ];
