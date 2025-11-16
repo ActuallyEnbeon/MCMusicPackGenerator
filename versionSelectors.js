@@ -44,6 +44,7 @@ function getVersionFromFormat(format, getMax) {
 }
 
 // -- Interaction behaviour --
+// Make version selectors affect format selectors
 minVersionInput.onchange = function () {
     minFormatInput.value = getFormatFromVersion(minVersionInput.value);
 }
@@ -52,7 +53,9 @@ maxVersionInput.onchange = function () {
     maxFormatInput.value = getFormatFromVersion(maxVersionInput.value);
 }
 
+// Make format selectors affect version selectors
 minFormatInput.onchange = function () {
+    minFormatInput.oninput();
     try {
         minVersionInput.value = getVersionFromFormat(minFormatInput.value);
     } catch (e) {
@@ -61,10 +64,30 @@ minFormatInput.onchange = function () {
 }
 
 maxFormatInput.onchange = function () {
+    maxFormatInput.oninput();
     try {
         maxVersionInput.value = getVersionFromFormat(maxFormatInput.value, true);
     } catch (e) {
         maxVersionInput.value = "";
+    }
+}
+
+// Make format selectors correctly change to minor versions at format 65.0
+minFormatInput.oninput = function () {
+    if (minFormatInput.value >= 65) {
+        minFormatInput.step = 0.1;
+    } else {
+        minFormatInput.step = 1;
+        if (minFormatInput.value > 64) minFormatInput.value = 64;
+    }
+}
+
+maxFormatInput.oninput = function () {
+    if (minFormatInput.value >= 65) {
+        minFormatInput.step = 0.1;
+    } else {
+        minFormatInput.step = 1;
+        if (minFormatInput.value > 64) minFormatInput.value = 64;
     }
 }
 
