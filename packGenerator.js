@@ -1,14 +1,42 @@
+// -- Helper functions --
+function getValidatedPackObject() {
+    let minFormat = parseFloat(minFormatInput.value);
+    let maxFormat = parseFloat(maxFormatInput.value);
+
+    if (maxFormat < minFormat) {
+        let minVersion = minVersionInput.value;
+        let maxVersion = maxVersionInput.value;
+        alert("Error while exporting: The max version (" + maxVersion + ") should be the same as or later than the min version (" + minVersion +").");
+        throw new Error("Max format " + maxFormat + " should be greater than or equal to min format " + minFormat);
+    }
+
+    let packFile = {"pack": {"description": document.getElementById("desc").value}};
+    let packFileObj = packFile["pack"];
+
+    if (minFormat < 65) {
+        packFileObj["pack_format"] = minFormat;
+        packFileObj["supported_formats"] = {"min_inclusive": minFormat, "max_inclusive": maxFormat};
+    }
+
+    if (maxFormat >= 65) {
+        packFileObj["min_format"] = minFormat;
+        packFileObj["max_format"] = maxFormat;
+    }
+
+    return packFile;
+}
+
+// -- Main function --
 function downloadPackZip() {
     let zip = new JSZip();
 
-    // TODO: account for old pack format params
-    let packFile = {
-        "pack": {
-            "min_format": parseFloat(document.getElementById("min_format").value),
-            "max_format": parseFloat(document.getElementById("max_format").value),
-            "description": document.getElementById("desc").value,
-        }
+    let packFile;
+    try {
+        packFile = getValidatedPackObject();
+    } catch (e) {
+        return;
     }
+
     zip.file("pack.mcmeta", JSON.stringify(packFile));
 
     let packIcon = iconFileUpload.files[0];

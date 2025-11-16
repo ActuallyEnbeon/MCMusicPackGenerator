@@ -47,10 +47,12 @@ function getVersionFromFormat(format, getMax) {
 // Make version selectors affect format selectors
 minVersionInput.onchange = function () {
     minFormatInput.value = getFormatFromVersion(minVersionInput.value);
+    minFormatInput.oninput();
 }
 
 maxVersionInput.onchange = function () {
     maxFormatInput.value = getFormatFromVersion(maxVersionInput.value);
+    maxFormatInput.oninput();
 }
 
 // Make format selectors affect version selectors

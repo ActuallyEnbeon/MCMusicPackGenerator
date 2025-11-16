@@ -1,7 +1,42 @@
+// -- Helper functions --
+function alertCouldNotRead(packName, problemString) {
+    alert("Error while reading \"" + packName + "\": " + problemString);
+}
+
 function removeFileExtension(filename) {
     return filename.replace(/\.[^/.]+$/, "");
 }
 
+function getFormats(packMCMETA) {
+    // First, try new style
+    let minFormat = packMCMETA["min_format"];
+    if (minFormat != undefined) {
+        return [minFormat, packMCMETA["max_format"]];
+    }
+    // Next, try old style with supported_formats
+    let supportedFormats = packMCMETA["supported_formats"];
+    if (supportedFormats != undefined) {
+        // Need to try all possible value types
+        // Dictionary
+        if (supportedFormats["min_inclusive"] != undefined) {
+            return [supportedFormats["min_inclusive"], supportedFormats["max_inclusive"]];
+        // Array
+        } else if (supportedFormats[0] != undefined) {
+            return [supportedFormats[0], supportedFormats[1]];
+        // Number
+        } else {
+            return [supportedFormats, supportedFormats];
+        }
+    }
+    // Finally, try old style with pack_format
+    let packFormat = packMCMETA["pack_format"];
+    if (packFormat != undefined) {
+        return [packFormat, packFormat];
+    }
+    throw new Error("Pack format could not be read");
+}
+
+// -- Main function --
 function readPackZip(pack) {
     // First, clear all fields
     clearAllInputs();
@@ -17,10 +52,18 @@ function readPackZip(pack) {
             // Load other pack info from .mcmeta file
             zip.file("pack.mcmeta").async("string").then(function(data) {
                 let packMCMETA = JSON.parse(data)["pack"];
+                // Description
                 document.getElementById("desc").value = packMCMETA["description"];
-                // TODO: account for old pack format params
-                document.getElementById("min_format").value = packMCMETA["min_format"];
-                document.getElementById("max_format").value = packMCMETA["max_format"];
+                // Pack formats
+                let formats = getFormats(packMCMETA);
+                minFormatInput.value = formats[0];
+                maxFormatInput.value = formats[1];
+                // And flush to the version selectors
+                minFormatInput.onchange();
+                maxFormatInput.onchange();
+            }).catch(e => {
+                console.error(e);
+                alertCouldNotRead(pack.name, "pack.mcmeta is not formatted correctly.");
             });
             // Load pack.png into icon upload element, if it exists
             let packPNG = zip.file("pack.png");
@@ -31,6 +74,9 @@ function readPackZip(pack) {
                     dataTransfer.items.add(new File([blob], "pack.png"));
                     iconFileUpload.files = dataTransfer.files;
                     iconFileUpload.onchange();
+                }).catch(e => {
+                    console.error(e);
+                    alertCouldNotRead(pack.name, "pack.png could not be loaded.");
                 });
             }
             // Prepare sounds.json
@@ -74,10 +120,13 @@ function readPackZip(pack) {
                         });
                     });
                 });
+            }).catch(e => {
+                console.error(e);
+                alertCouldNotRead(pack.name, "Failed to read sound files.");
             });
         } catch (e) {
             console.error(e);
-            alert("Error: Could not read pack file \"" + pack.name + "\". It may be formatted incorrectly or corrupted.");
+            alertCouldNotRead(pack.name, "One or more required files are missing.");
         }
     });
 }
