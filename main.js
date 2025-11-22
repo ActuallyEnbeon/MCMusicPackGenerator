@@ -65,7 +65,6 @@ function clearAllInputs() {
     // Track input fields
     clearTrackInputs();
     // Pack input fields
-    packUploadInput.value = "";
     for (const key in packOptions.children) {
         let element = packOptions.children[key];
         if (element.nodeName == "INPUT") {
@@ -218,6 +217,7 @@ for (const toggle of collapsibleToggles) {
 // -- Bare code --
 // Clear all fields when first loaded
 clearAllInputs();
+packUploadInput.value = "";
 trackList.innerHTML = "";
 disableTrackInputs();
 
