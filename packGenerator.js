@@ -127,8 +127,8 @@ function downloadPackZip() {
                 if (shouldIncludeOldNether(eventkey, minFormat)) {
                     soundsFile["music.nether"] = {"sounds": []};
                 }
-                // Special case for jungle & forest in 1.19.X
-                if (shouldIncludeOldJungleAndForest(eventkey, minFormat)) {
+                // Special case for jungle & forest in 1.19.X (plus don't reset if this case is already present)
+                if (shouldIncludeOldJungleAndForest(eventkey, minFormat) && !soundsFile["music.overworld.jungle_and_forest"]) {
                     soundsFile["music.overworld.jungle_and_forest"] = {"sounds": []};
                 }
             }
