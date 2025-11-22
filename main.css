@@ -51,6 +51,10 @@ body {
   margin-right: 1em;
 }
 
+#volume {
+  max-width: 4em;
+}
+
 #pack_options {
     border: 1px solid black;
     vertical-align: top;

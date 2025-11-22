@@ -55,7 +55,7 @@ function clearTrackInputs() {
     trackFileUpload.value = "";
     nameInput.value = "";
     artistInput.value = "";
-    volumeInput.value = 1.0;
+    volumeInput.value = 100;
     for (const key in checkBoxes) {
         checkBoxes[key].checked = false;
     }
@@ -161,7 +161,7 @@ function getEventsObject(trackName) {
 function saveTrackOptions(trackName) {
     tracksWithOptions[trackName]["name"] = nameInput.value;
     tracksWithOptions[trackName]["artist"] = artistInput.value;
-    tracksWithOptions[trackName]["volume"] = parseFloat(volumeInput.value);
+    tracksWithOptions[trackName]["volume"] = parseFloat(volumeInput.value) / 100;
     for (const key in checkBoxes) {
         getEventsObject(trackName)[key] = checkBoxes[key].checked;
     }
@@ -170,7 +170,7 @@ function saveTrackOptions(trackName) {
 function loadTrackOptions(trackName) {
     nameInput.value = tracksWithOptions[trackName]["name"];
     artistInput.value = tracksWithOptions[trackName]["artist"];
-    volumeInput.value = tracksWithOptions[trackName]["volume"];
+    volumeInput.value = tracksWithOptions[trackName]["volume"] * 100;
     for (const key in getEventsObject(trackName)) {
         checkBoxes[key].checked = getEventsObject(trackName)[key];
     }
