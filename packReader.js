@@ -61,13 +61,11 @@ function readPackZip(pack) {
                     minFormatInput.value = minFormat;
                 } else {
                     minFormatInput.value = minFormat[0];
-                    minFormatInputMinor.value = minFormat[1];
                 }
                 if (maxFormat[0] == undefined) {
                     maxFormatInput.value = maxFormat;
                 } else {
                     maxFormatInput.value = maxFormat[0];
-                    maxFormatInputMinor.value = maxFormat[1];
                 }
                 // And flush to the version selectors
                 minFormatInput.onchange();
