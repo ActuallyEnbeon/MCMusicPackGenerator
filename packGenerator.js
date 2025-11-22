@@ -1,38 +1,34 @@
 // -- Helper functions --
 function getValidatedPackObject() {
     let minFormat = parseInt(minFormatInput.value);
-    let minFormatMinor = parseInt(minFormatInputMinor.value);
     let maxFormat = parseInt(maxFormatInput.value);
-    let maxFormatMinor = parseInt(maxFormatInputMinor.value);
 
-    if (maxFormat < minFormat || (maxFormat == minFormat && maxFormatMinor < minFormatMinor)) {
+    if (maxFormat < minFormat) { // || (maxFormat == minFormat && maxFormatMinor < minFormatMinor)) {
         let minVersion = minVersionInput.value;
         let maxVersion = maxVersionInput.value;
         // If minVersion and maxVersion are valid versions, name them
         if (minVersion && maxVersion) {
-            alert("Error while exporting: The max version (" + maxVersion + ") should be the same as or later than the min version (" + minVersion +").");
+            alert("Error while exporting: The min version (" + minVersion + ") should be the same as or earlier than the max version (" + maxVersion +").");
         // Otherwise name the selected pack formats
         } else {
             alert(
-                "Error while exporting: The max format (" + maxFormat + "." + maxFormatMinor +") " +
-                "should be the same as or greater than the min format (" +  minFormat + "." + minFormatMinor + ")."
+                "Error while exporting: The min format (" + minFormat +") should be the same as or less than the max format (" +  maxFormat + ")."
             );
         }
-        throw new Error("Max format " + maxFormat + "." + maxFormatMinor + " should be greater than or equal to min format " + minFormat + "." + minFormatMinor);
+        throw new Error("Min format " + minFormat + " should be greater than or equal to max format " + maxFormat);
     }
 
     let packFile = {"pack": {"description": document.getElementById("desc").value}};
     let packFileObj = packFile["pack"];
 
-    // TODO: Minecraft >1.20.2 claims pack is incompatible if minFormat < 15 - how to fix?
     if (minFormat < 65) {
         packFileObj["pack_format"] = minFormat;
         packFileObj["supported_formats"] = {"min_inclusive": minFormat, "max_inclusive": maxFormat};
     }
 
     if (maxFormat >= 65) {
-        packFileObj["min_format"] = [minFormat, minFormatMinor];
-        packFileObj["max_format"] = [maxFormat, maxFormatMinor];
+        packFileObj["min_format"] = minFormat;
+        packFileObj["max_format"] = maxFormat;
     }
 
     return packFile;
@@ -43,9 +39,11 @@ function shouldIncludeOldNether(eventkey, minFormat) {
     return (eventkey == "nether_wastes" && minFormat <= 5);
 }
 
+const jungleAndForestEvents = ["forest", "flower_forest", "jungle", "sparse_jungle", "bamboo_jungle"];
+
 function shouldIncludeOldJungleAndForest(eventkey, minFormat) {
     if (minFormat[0] != undefined) minFormat = minFormat[0];
-    return (["forest", "flower_forest", "jungle", "sparse_jungle", "bamboo_jungle"].includes(eventkey) && minFormat < 15);
+    return (jungleAndForestEvents.includes(eventkey) && minFormat < 15 && minFormat >= 9);
 }
 
 // -- Main function --
@@ -82,6 +80,12 @@ function downloadPackZip() {
     // Set up data files
     let soundsFile = {};
     let langFile = {};
+
+    // Warn user if there are no tracks
+    if (Object.keys(tracksWithOptions).length <= 0) {
+        alert("Error while exporting: Pack has no tracks.");
+        return;
+    }
 
     for (const key in tracksWithOptions) {
         // First, get track info

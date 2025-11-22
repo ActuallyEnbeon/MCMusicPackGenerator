@@ -61,7 +61,7 @@ body {
   min-width: 31em;
 }
 
-#min_format, #max_format, #min_format_minor, #max_format_minor {
+#min_format, #max_format {
   max-width: 3em;
 }
 
