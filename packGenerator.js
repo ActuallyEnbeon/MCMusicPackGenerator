@@ -94,7 +94,7 @@ function downloadPackZip() {
         let name = tracksWithOptions[key]["name"];
         let artist = tracksWithOptions[key]["artist"];
         let volume = tracksWithOptions[key]["volume"];
-        let events = tracksWithOptions[key]["events"];
+        let weights = tracksWithOptions[key]["weights"];
 
         if (!name) {
             alert("Error while exporting: Track \"" + key + "\" does not have a name.");
@@ -121,9 +121,9 @@ function downloadPackZip() {
 
         // Next, update soundsFile
         // For each event...
-        for (const eventkey in events) {
+        for (const eventkey in weights) {
             // If this track does not play here, skip
-            if (!events[eventkey]) { continue; }
+            if (!weights[eventkey]) { continue; }
 
             // Get the soundEvent name for this event
             let subname = checkBoxes[eventkey].parentElement.getAttribute("name");
@@ -148,7 +148,7 @@ function downloadPackZip() {
                 "stream": true,
             };
             if (volume != 1) soundData["volume"] = volume;
-            // TODO: other attributes
+            if (weights[eventkey] != 1) soundData["weight"] = weights[eventkey];
 
             soundsFile[soundEvent]["sounds"].push(soundData);
             // Special case for nether before 1.16

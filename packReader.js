@@ -111,7 +111,8 @@ function readPackZip(pack) {
                                 let bareSoundEventName = key.split(".").at(-1);
                                 // Add event to list only if it has an associated checkbox
                                 if (bareSoundEventName in checkBoxes) {
-                                    getEventsObject(filename)[bareSoundEventName] = true;
+                                    let weight = soundObj["weight"];
+                                    getEventWeights(filename)[bareSoundEventName] = (weight ? weight : 1);
                                 }
                                 // And get the sound's volume if it's not 1
                                 let newVolume = soundObj["volume"];

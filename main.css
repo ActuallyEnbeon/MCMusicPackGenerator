@@ -64,6 +64,10 @@ body {
   max-width: 4em;
 }
 
+.weights {
+  max-width: 3em;
+}
+
 #pack_options {
     border: 1px solid black;
     vertical-align: top;

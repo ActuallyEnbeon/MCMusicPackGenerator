@@ -12,6 +12,7 @@
 <button id="export_pack">Export current pack</button>
 <input type="checkbox" id="advanced_mode">
 <label for="advanced_mode">Advanced mode</label>
+<span class="superscript cursor_help" title="Advanced mode allows you to weight tracks more heavily per-event, and also provides precise control over the pack format.">(?)</span>
 <button id="dark_mode_toggle">Dark mode</button>
 <br><br>
 <label for="tracks_upload">Upload music tracks (.OGG Vorbis)</label>
@@ -31,7 +32,6 @@
             <input type="number" min="0" step="5" class="volume" id="volume" name="volume">
             <span>%</span>
             <br><br>
-            <!-- TODO: Add weights option to each selection below, when in advanced mode -->
             <div class="heading"><b>Events</b></div>
             <input type="checkbox" class="game" name="game">
             <label for="game">Overworld (all biomes)</label><br>
@@ -132,12 +132,12 @@
         <select id="max_version" name="max_version" required="true"></select>
         <span class="superscript cursor_help" title="Unfortunately, this tool doesn't support game versions before 1.9. Additionally, for versions before 1.20, the max version is locked.">(?)</span>
         <br>
-        <div id="format_specifiers_advanced" class="hidden">
+        <div id="format_specifiers_advanced" class="advanced hidden">
             <label for="min_format">Min format</label>
             <input type="number" min="2" max="70" step="1" id="min_format" name="min_format">
             <label for="max_format">Max format</label>
             <input type="number" min="2" max="70" step="1" id="max_format" name="max_format">
-            <span class="superscript cursor_help" title="If the min format is less than 15, game versions 1.20 and above will report that the pack is incompatible, even if the max format is 15 or higher.">(i)</span>
+            <span class="superscript cursor_help" title="If the min format is less than 15, game versions 1.20.2 and above will report that the pack is incompatible, even if the max format is 15 or higher.">(i)</span>
             <br>
         </div>
         <br>

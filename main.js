@@ -16,14 +16,17 @@ const deleteTrackButton = document.getElementById("delete_track");
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
 const checkBoxes = {};
+const weightInputs = {};
 for (const option of trackOptionsBox.children) {
     if (option.getAttribute("type") == "checkbox") { 
         checkBoxes[option.name] = option;
+        createWeightInput(option);
     }
     if (option.classList.contains("collapsible_content")) {
         for (const child of option.children) {
             if (child.getAttribute("type") == "checkbox") { 
                 checkBoxes[child.name] = child;
+                createWeightInput(child);
             }
         }
     }
@@ -35,12 +38,39 @@ const iconFileUpload = document.getElementById("pack_icon_upload");
 const trackFiles = {};
 const tracksWithOptions = {};
 
+// -- Setup functions --
+function createWeightInput(box) {
+    // Create the input element and set the necessary attributes
+    input = document.createElement("input");
+    input.setAttribute("type", "number");
+    input.setAttribute("value", 1);
+    input.setAttribute("min", 1);
+    input.setAttribute("step", 1);
+    // Style the input correctly, and hide and disable it by default
+    input.classList.add("weights");
+    input.classList.add("advanced");
+    input.classList.add("hidden");
+    input.disabled = true;
+    // Insert the element into the document
+    box.insertAdjacentElement('afterend', input);
+    // Keep track of the element for interaction later
+    weightInputs[box.name] = input;
+    // And finally, make the box enable and disable the weight input correctly
+    box.onchange = () => {
+        weightInputs[box.name].disabled = !box.checked;
+    }
+}
+
 // -- Helper functions --
 function enableTrackInputs() {
     nameInput.disabled = false;
     artistInput.disabled = false;
     volumeInput.disabled = false;
-    for (const key in checkBoxes) checkBoxes[key].disabled = false;
+    for (const key in checkBoxes) {
+        checkBoxes[key].disabled = false;
+        // Weight inputs should only be enabled conditionally
+        checkBoxes[key].onchange();
+    }
     deleteTrackButton.disabled = false;
 }
 
@@ -49,6 +79,7 @@ function disableTrackInputs() {
     artistInput.disabled = true;
     volumeInput.disabled = true;
     for (const key in checkBoxes) checkBoxes[key].disabled = true;
+    for (const key in weightInputs) weightInputs[key].disabled = true;
     deleteTrackButton.disabled = true;
 }
 
@@ -59,6 +90,10 @@ function clearTrackInputs() {
     volumeInput.value = 100;
     for (const key in checkBoxes) {
         checkBoxes[key].checked = false;
+    }
+    for (const key in weightInputs) {
+        weightInputs[key].value = 1;
+        weightInputs[key].disabled = true;
     }
 }
 
@@ -89,8 +124,9 @@ function addFileToTrackList(file) {
 // -- Interaction behaviour --
 // Advanced mode toggle
 advancedModeToggle.onchange = function() {
-    let checked = advancedModeToggle.checked;
-    document.getElementById("format_specifiers_advanced").classList.toggle("hidden");
+    for (const element of document.getElementsByClassName("advanced")) {
+        element.classList.toggle("hidden");
+    }
 }
 
 // Dark mode toggle
@@ -172,8 +208,8 @@ packUploadInput.onchange = function() {
 // -- Track selection --
 var currentSelectedTrack;
 
-function getEventsObject(trackName) {
-    return tracksWithOptions[trackName]["events"];
+function getEventWeights(trackName) {
+    return tracksWithOptions[trackName]["weights"];
 }
 
 function saveTrackOptions(trackName) {
@@ -181,7 +217,11 @@ function saveTrackOptions(trackName) {
     tracksWithOptions[trackName]["artist"] = artistInput.value;
     tracksWithOptions[trackName]["volume"] = parseFloat(volumeInput.value) / 100;
     for (const key in checkBoxes) {
-        getEventsObject(trackName)[key] = checkBoxes[key].checked;
+        if (checkBoxes[key].checked) {
+            getEventWeights(trackName)[key] = parseInt(weightInputs[key].value);
+        } else {
+            getEventWeights(trackName)[key] = 0;
+        }
     }
 }
 
@@ -189,8 +229,15 @@ function loadTrackOptions(trackName) {
     nameInput.value = tracksWithOptions[trackName]["name"];
     artistInput.value = tracksWithOptions[trackName]["artist"];
     volumeInput.value = tracksWithOptions[trackName]["volume"] * 100;
-    for (const key in getEventsObject(trackName)) {
-        checkBoxes[key].checked = getEventsObject(trackName)[key];
+    for (const key in getEventWeights(trackName)) {
+        let weight = getEventWeights(trackName)[key];
+        if (weight > 0) {
+            checkBoxes[key].checked = true;
+            weightInputs[key].value = weight;
+        } else {
+            checkBoxes[key].checked = false;
+            weightInputs[key].value = 1;
+        }
     }
     enableTrackInputs();
 }
@@ -199,9 +246,9 @@ function clearTrackOptions(trackName) {
     tracksWithOptions[trackName]["name"] = "";
     tracksWithOptions[trackName]["artist"] = "";
     tracksWithOptions[trackName]["volume"] = 1.0;
-    tracksWithOptions[trackName]["events"] = {};
+    tracksWithOptions[trackName]["weights"] = {};
     for (const key in checkBoxes) {
-        getEventsObject(trackName)[key] = false;
+        getEventWeights(trackName)[key] = 0;
     }
 }
 
