@@ -81,11 +81,13 @@ function downloadPackZip() {
     let soundsFile = {};
     let langFile = {};
 
-    // Warn user if there are no tracks
+    // Abort if there are no tracks
     if (Object.keys(tracksWithOptions).length <= 0) {
         alert("Error while exporting: Pack has no tracks.");
         return;
     }
+
+    let seenTrackPaths = [];
 
     for (const key in tracksWithOptions) {
         // First, get track info
@@ -106,6 +108,13 @@ function downloadPackZip() {
         // Format the name and artist safely for use in data files
         let safeName = name.replaceAll(" ", "_").toLowerCase();
         let safeArtist = artist.replaceAll(" ", "_").toLowerCase();
+
+        // Abort if this track has the same name and artist as another track
+        if (seenTrackPaths.includes(safeArtist + "/" + safeName)) {
+            alert("Error while exporting: Track \"" + key + "\" has the same name and artist as another track.");
+            return;
+        }
+        seenTrackPaths.push(safeArtist + "/" + safeName);
 
         // Save .ogg first
         musicFolder.folder(safeArtist).file(safeName + ".ogg", trackFiles[key]);
