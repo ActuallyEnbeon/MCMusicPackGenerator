@@ -114,7 +114,12 @@ trackFileUpload.onchange = function() {
             continue;
         }
         addFileToTrackList(file);
-         // TODO: Try autoloading track info from metadata
+         // Autoload track info from metadata
+        musicmetadata(file, function (err, result) {
+            if (err) throw err;
+            tracksWithOptions[file.name]["name"] = result["title"];
+            tracksWithOptions[file.name]["artist"] = result["artist"];
+        });
     }
 
     // Clear the file upload field
