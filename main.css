@@ -1,5 +1,17 @@
 body {
   font-family: sans-serif;
+  background-color: white;
+  color: black;
+}
+
+.dark_mode {
+  background-color: #281E29;
+  color: white;
+}
+
+input {
+  background-color: inherit;
+  color: inherit;
 }
 
 .hidden {
@@ -26,7 +38,7 @@ body {
   background-color: #f1f1f1;
 }
 
-#advanced_mode {
+#advanced_mode, #dark_mode_toggle {
   margin-left: 5em;
 }
 
@@ -37,6 +49,8 @@ body {
 #track_select {
     min-width: 15em;
     vertical-align: top;
+    background-color: inherit;
+    color: inherit;
 }
 
 #track_options_box {

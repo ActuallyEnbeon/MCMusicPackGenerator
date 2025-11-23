@@ -2,6 +2,7 @@
 const packUploadInput = document.getElementById("import_pack");
 
 const advancedModeToggle = document.getElementById("advanced_mode");
+const darkModeToggle = document.getElementById("dark_mode_toggle")
 
 const trackFileUpload = document.getElementById("tracks_upload");
 const trackList = document.getElementById("track_select");
@@ -91,6 +92,18 @@ advancedModeToggle.onchange = function() {
     let checked = advancedModeToggle.checked;
     document.getElementById("format_specifiers_advanced").classList.toggle("hidden");
 }
+
+// Dark mode toggle
+darkModeToggle.onclick = function() {
+    if (document.body.classList.contains("dark_mode")) {
+        document.body.classList.remove("dark_mode");
+        darkModeToggle.innerHTML = "Dark mode";
+    } else {
+        document.body.classList.add("dark_mode");
+        darkModeToggle.innerHTML = "Light mode";
+    }
+}
+
 
 // Track uploading
 trackFileUpload.onchange = function() {
