@@ -106,8 +106,8 @@ function downloadPackZip() {
         }
 
         // Format the name and artist safely for use in data files
-        let safeName = name.replaceAll(" ", "_").toLowerCase();
-        let safeArtist = artist.replaceAll(" ", "_").toLowerCase();
+        let safeName = name.trim().replaceAll(" ", "_").toLowerCase();
+        let safeArtist = artist.trim().replaceAll(" ", "_").toLowerCase();
 
         // Abort if this track has the same name and artist as another track
         if (seenTrackPaths.includes(safeArtist + "/" + safeName)) {
