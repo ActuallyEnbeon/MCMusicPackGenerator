@@ -108,7 +108,6 @@ function readPackZip(pack) {
                             for (const soundObj of thisEventList) {
                                 if (soundObj["name"] != filepath && soundObj["name"] != "minecraft:" + filepath) continue;
                                 // Set the events list
-                                let bareSoundEventName = key.split(".").at(-1);
                                 let weight = soundObj["weight"];
                                 // If weight is nonstandard, switch on advanced mode
                                 if (weight) {
@@ -117,6 +116,7 @@ function readPackZip(pack) {
                                 }
                                 // If the event's name is reserved...
                                 if (reservedEventNames.includes(key)) {
+                                    let bareSoundEventName = key.split(".").at(-1);
                                     // Use the bare name if it has a corresponding checkbox
                                     if (bareSoundEventName in checkBoxes) {
                                         getEventWeights(filename)[bareSoundEventName] = (weight ? weight : 1);
