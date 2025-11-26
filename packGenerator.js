@@ -142,14 +142,14 @@ function downloadPackZip() {
             // Get the soundEvent name for this event
             let soundEvent = getEventNameFromShortName(eventkey);
 
-            // And get the "really old" (pre-1.9) key, if it exists
+            // And get the "really old" (pre-1.9) key, if it exists and is required
             let reallyOldKey = getReallyOldKey(eventkey, minFormat);
 
             // Create the soundEvent if it doesn't exist
             if (soundsFile[soundEvent] == undefined) {
                 soundsFile[soundEvent] = {"sounds": []};
                 // Special case for pre-1.9 sound events
-                if (minFormat < 2 && reallyOldKey) {
+                if (reallyOldKey) {
                     soundsFile[reallyOldKey] = {"sounds": []};
                 }
                 // Special case for nether before 1.16
