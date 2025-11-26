@@ -40,6 +40,11 @@ const iconFileUpload = document.getElementById("pack_icon_upload");
 const trackFiles = {};
 const tracksWithOptions = {};
 
+const savedData = {
+    "pack_options": convertedPackOptions(),
+    "tracks_with_options": {},
+}
+
 // -- Setup functions --
 function createWeightInput(box) {
     // Create the input element and set the necessary attributes
@@ -143,6 +148,15 @@ function deactivateAdvancedMode() {
     advancedModeToggle.onchange();
 }
 
+// Allows comparing objects
+function deepEqual(x, y) {
+  const ok = Object.keys, tx = typeof x, ty = typeof y;
+  return x && y && tx === 'object' && tx === ty ? (
+    ok(x).length === ok(y).length &&
+      ok(x).every(key => deepEqual(x[key], y[key]))
+  ) : (x === y);
+}
+
 // -- Interaction behaviour --
 // Advanced mode toggle
 advancedModeToggle.onchange = function() {
@@ -230,6 +244,28 @@ document.getElementById("export_pack").onclick = function() {
 packUploadInput.onchange = function() {
     readPackZip(packUploadInput.files[0]);
 }
+
+// Unsaved changes warning
+function convertedPackOptions() {
+    let obj = {};
+    for (const key in packOptions.children) {
+        let element = packOptions.children[key];
+        if (element.nodeName == "INPUT") {
+            obj[key] = element.value;
+        }
+    }
+    return obj;
+}
+
+window.addEventListener("beforeunload", (e) => {
+    // If the tracksWithOptions or the packOptions have changed,
+    if (!deepEqual(savedData["tracks_with_options"], tracksWithOptions)
+        || !deepEqual(savedData["pack_options"], convertedPackOptions())) {
+            // Warn the user of unsaved changes
+            e.preventDefault();
+            e.returnValue = ""; // Legacy browser support
+    }
+});
 
 // -- Track selection --
 var currentSelectedTrack;
