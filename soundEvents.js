@@ -1,0 +1,78 @@
+// -- Helper functions --
+function getEventNameFromShortName(shortName) {
+    if (shortName.startsWith("custom$")) {
+        return shortName.substring("custom$".length);
+    }
+    let subname = checkBoxes[shortName].parentElement.getAttribute("name");
+    return "music." + (subname == undefined ? "" : subname + ".") + shortName;
+}
+
+// -- Calculating reserved event names --
+const reservedEventNames = [
+    // These are special case event names, so need to be defined manually
+    "music.nether",
+    "minecraft:music.nether",
+    "music.overworld.jungle_and_forest",
+    "minecraft:music.overworld.jungle_and_forest",
+]
+
+for (const key in checkBoxes) {
+    let soundEvent = getEventNameFromShortName(key);
+    reservedEventNames.push(soundEvent);
+    reservedEventNames.push("minecraft:" + soundEvent);
+}
+
+// -- Interaction for adding custom sound events --
+function createCustomEvent(eventkey) {
+    // Input sanitisation
+    let prefixedEvent = "custom$" + eventkey;
+    if (!eventkey) {
+        alert("Error while adding custom event: Custom event key cannot be empty.");
+        return;
+    } else if (reservedEventNames.includes(eventkey)) {
+        alert("Error while adding custom event: The event \"" + eventkey +"\" is a vanilla Minecraft event already used by this tool.");
+        return;
+    } else if (prefixedEvent in checkBoxes) {
+        alert("Error while adding custom event: An event \"" + eventkey + "\" already exists in this pack.");
+        return;
+    }
+    // Checkbox
+    let checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    checkBox.setAttribute("name", prefixedEvent);
+    checkBox.classList.add(prefixedEvent); 
+    if (!currentSelectedTrack) {
+        checkBox.disabled = true;
+    }
+    document.getElementById("custom_event_label").insertAdjacentElement('beforebegin', checkBox);
+    checkBoxes[prefixedEvent] = checkBox;
+    // Weights input
+    let weights = createWeightInput(checkBox);
+    weights.classList.remove("advanced");
+    weights.classList.remove("hidden");
+    // Label
+    let label = document.createElement("label");
+    label.setAttribute("for", prefixedEvent);
+    label.innerHTML = " " + eventkey;
+    weights.insertAdjacentElement('afterend', label);
+    // Delete button and break
+    let deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "Delete event";
+    deleteButton.classList.add("delete_event");
+    label.insertAdjacentElement('afterend', deleteButton);
+    let br = document.createElement("br");
+    deleteButton.insertAdjacentElement('afterend', br);
+    deleteButton.onclick = function() {
+        delete checkBoxes[prefixedEvent];
+        checkBox.remove();
+        delete weightInputs[prefixedEvent];
+        weights.remove();
+        label.remove();
+        deleteButton.remove();
+        br.remove();
+    }
+}
+
+document.getElementById("add_custom_event").onclick = function() {
+    createCustomEvent(customEventInput.value.toLowerCase());
+}

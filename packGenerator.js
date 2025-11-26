@@ -126,8 +126,7 @@ function downloadPackZip() {
             if (!weights[eventkey]) { continue; }
 
             // Get the soundEvent name for this event
-            let subname = checkBoxes[eventkey].parentElement.getAttribute("name");
-            let soundEvent = "music." + (subname == undefined ? "" : subname + ".") + eventkey;
+            let soundEvent = getEventNameFromShortName(eventkey);
 
             // Create the soundEvent if it doesn't exist
             if (soundsFile[soundEvent] == undefined) {

@@ -13,6 +13,8 @@ const artistInput = document.getElementById("artist");
 const volumeInput = document.getElementById("volume");
 const deleteTrackButton = document.getElementById("delete_track");
 
+const customEventInput = document.getElementById("custom_event_input");
+
 const collapsibleToggles = document.getElementsByClassName("collapsible_toggle");
 
 const checkBoxes = {};
@@ -59,6 +61,7 @@ function createWeightInput(box) {
     box.onchange = () => {
         weightInputs[box.name].disabled = !box.checked;
     }
+    return input;
 }
 
 // -- Helper functions --
@@ -97,9 +100,13 @@ function clearTrackInputs() {
     }
 }
 
-function clearAllInputs() {
+function clearAllData() {
     // Track input fields
     clearTrackInputs();
+    customEventInput.value = "";
+    for (const button of document.getElementsByClassName("delete_event")) {
+        button.onclick();
+    }
     // Pack input fields
     for (const key in packOptions.children) {
         let element = packOptions.children[key];
@@ -109,7 +116,11 @@ function clearAllInputs() {
     }
     iconFileUpload.onchange();
     // Other input fields
-    advancedModeToggle.checked = false;
+    deactivateAdvancedMode();
+    // Saved pack data
+    for (key in tracksWithOptions) {
+        delete tracksWithOptions[key];
+    }
 }
 
 function addFileToTrackList(file) {
@@ -121,11 +132,25 @@ function addFileToTrackList(file) {
     clearTrackOptions(option.name);
 }
 
+function activateAdvancedMode() {
+    advancedModeToggle.checked = true;
+    advancedModeToggle.onchange();
+}
+
+function deactivateAdvancedMode() {
+    advancedModeToggle.checked = false;
+    advancedModeToggle.onchange();
+}
+
 // -- Interaction behaviour --
 // Advanced mode toggle
 advancedModeToggle.onchange = function() {
     for (const element of document.getElementsByClassName("advanced")) {
-        element.classList.toggle("hidden");
+        if (advancedModeToggle.checked) {
+            element.classList.remove("hidden");
+        } else {
+            element.classList.add("hidden");
+        }
     }
 }
 
@@ -281,7 +306,7 @@ for (const toggle of collapsibleToggles) {
 
 // -- Bare code --
 // Clear all fields when first loaded
-clearAllInputs();
+clearAllData();
 packUploadInput.value = "";
 trackList.innerHTML = "";
 disableTrackInputs();

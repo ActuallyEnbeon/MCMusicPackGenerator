@@ -39,7 +39,7 @@ function getFormats(packMCMETA) {
 // -- Main function --
 function readPackZip(pack) {
     // First, clear all fields
-    clearAllInputs();
+    clearAllData();
     trackList.innerHTML = "";
     disableTrackInputs();
     // Then load the pack file
@@ -109,10 +109,22 @@ function readPackZip(pack) {
                                 if (soundObj["name"] != filepath && soundObj["name"] != "minecraft:" + filepath) continue;
                                 // Set the events list
                                 let bareSoundEventName = key.split(".").at(-1);
-                                // Add event to list only if it has an associated checkbox
+                                let weight = soundObj["weight"];
+                                // If weight is nonstandard, switch on advanced mode
+                                if (weight) {
+                                    activateAdvancedMode();
+                                    alert("Alert: This pack uses nonstandard weights. Advanced mode has been switched on.");
+                                }
+                                // If the event has an associated checkbox, use the bare name
                                 if (bareSoundEventName in checkBoxes) {
-                                    let weight = soundObj["weight"];
                                     getEventWeights(filename)[bareSoundEventName] = (weight ? weight : 1);
+                                } else if (!reservedEventNames.includes(key)) {
+                                    // Otherwise, create a custom event unless the name is reserved
+                                    createCustomEvent(key);
+                                    getEventWeights(filename)["custom$" + key] = (weight ? weight : 1);
+                                    // And switch on advanced mode
+                                    activateAdvancedMode();
+                                    alert("Alert: This pack uses custom sound events. Advanced mode has been switched on.");
                                 }
                                 // And get the sound's volume if it's not 1
                                 let newVolume = soundObj["volume"];

@@ -12,7 +12,11 @@
 <button id="export_pack">Export current pack</button>
 <input type="checkbox" id="advanced_mode">
 <label for="advanced_mode">Advanced mode</label>
-<span class="superscript cursor_help" title="Advanced mode allows you to weight tracks more heavily per-event, and also provides precise control over the pack format.">(?)</span>
+<span class="superscript cursor_help" title=
+"Advanced mode allows you to:
+- Change the weight (likelihood) of tracks playing per-event
+- Add custom sound events
+- Precisely control the pack format">(?)</span>
 <button id="dark_mode_toggle">Dark mode</button>
 <br><br>
 <label for="tracks_upload">Upload music tracks (.OGG Vorbis)</label>
@@ -116,15 +120,23 @@
             <label for="credits">Credits</label>
             <span class="superscript cursor_help" title="In vanilla, only &quot;C418 - Alpha&quot; plays during the credits.">(i)</span>
             <br>
+            <div id="custom_events" class="advanced hidden">
+                <b id="custom_events_heading">Custom events</b>
+                <span class="superscript cursor_help" title=
+                "Adding custom sound events to your pack allows you to make tracks play for modded sound events or vanilla non-music events. For modded events, remember to include the namespace.">(?)</span><br>
+                <label for="custom_event_input" id="custom_event_label">Event key</label>
+                <input type="text" id="custom_event_input">
+                <button id="add_custom_event">Add event</button><br>
+            </div>
             <!-- TODO: Allow user to add custom sound events (advanced) -->
         </div>
     </div>
     <div id="pack_options">
         <div class="heading"><b>Pack options</b></div>
         <label for="pack_name">Name</label>
-        <input type="text" class="pack_name" id="pack_name" name="pack_name"><br>
+        <input type="text" id="pack_name"><br>
         <label for="desc">Description</label>
-        <input type="text" class="desc" id="desc" name="desc"><br>
+        <input type="text" id="desc"><br>
 
         <label for="min_version">Min version</label>
         <select id="min_version" name="min_version" required="true"></select>
@@ -158,4 +170,5 @@
 <script src="packReader.js"></script>
 <script src="versionSelectors.js"></script>
 <script src="main.js"></script>
+<script src="soundEvents.js"></script>
 </html>

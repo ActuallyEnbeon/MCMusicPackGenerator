@@ -55,7 +55,7 @@ body {
     min-width: 40em;
 }
 
-#delete_track {
+#delete_track, .delete_event {
   float: right;
   margin-right: 1em;
 }
@@ -66,6 +66,10 @@ body {
 
 .weights {
   max-width: 3em;
+}
+
+#custom_event_input {
+  min-width: 25em;
 }
 
 #pack_options {
