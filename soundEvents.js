@@ -34,13 +34,13 @@ function createCustomEvent(eventkey) {
     let prefixedEvent = "custom$" + eventkey;
     if (!eventkey) {
         alert("Error while adding custom event: Custom event key cannot be empty.");
-        return;
+        return false;
     } else if (reservedEventNames.includes(eventkey)) {
         alert("Error while adding custom event: The event \"" + eventkey +"\" is a vanilla Minecraft event already used by this tool.");
-        return;
+        return false;
     } else if (prefixedEvent in checkBoxes) {
         alert("Error while adding custom event: An event \"" + eventkey + "\" already exists in this pack.");
-        return;
+        return false;
     }
     // Checkbox
     let checkBox = document.createElement("input");
@@ -77,8 +77,10 @@ function createCustomEvent(eventkey) {
         deleteButton.remove();
         br.remove();
     }
+    return true;
 }
 
 document.getElementById("add_custom_event").onclick = function() {
-    createCustomEvent(customEventInput.value.toLowerCase());
+    let success = createCustomEvent(customEventInput.value.toLowerCase());
+    if (success) customEventInput.value = "";
 }
