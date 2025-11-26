@@ -38,21 +38,21 @@ body {
 }
 
 #options > div {
-    display: inline-block;
+  display: inline-block;
 }
 
 #track_select {
-    min-width: 15em;
-    vertical-align: top;
-    background-color: inherit;
-    color: inherit;
+  min-width: 15em;
+  vertical-align: top;
+  background-color: inherit;
+  color: inherit;
 }
 
 #track_options_box {
-    border: 1px solid black;
-    display: inline-block;
-    vertical-align: top;
-    min-width: 40em;
+  border: 1px solid black;
+  display: inline-block;
+  vertical-align: top;
+  min-width: 40em;
 }
 
 #delete_track, .delete_event {
@@ -73,9 +73,9 @@ body {
 }
 
 #pack_options {
-    border: 1px solid black;
-    vertical-align: top;
-    min-width: 35em;
+  border: 1px solid black;
+  vertical-align: top;
+  min-width: 35em;
 }
 
 #desc {
