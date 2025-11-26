@@ -38,7 +38,7 @@ function getFormats(packMCMETA) {
 
 // -- Main function --
 function readPackZip(pack) {
-    // First, clear all fields
+    // First, clear all data
     clearAllData();
     trackList.innerHTML = "";
     disableTrackInputs();
@@ -115,11 +115,14 @@ function readPackZip(pack) {
                                     activateAdvancedMode();
                                     alert("Alert: This pack uses nonstandard weights. Advanced mode has been switched on.");
                                 }
-                                // If the event has an associated checkbox, use the bare name
-                                if (bareSoundEventName in checkBoxes) {
-                                    getEventWeights(filename)[bareSoundEventName] = (weight ? weight : 1);
-                                } else if (!reservedEventNames.includes(key)) {
-                                    // Otherwise, create a custom event unless the name is reserved
+                                // If the event's name is reserved...
+                                if (reservedEventNames.includes(key)) {
+                                    // Use the bare name if it has a corresponding checkbox
+                                    if (bareSoundEventName in checkBoxes) {
+                                        getEventWeights(filename)[bareSoundEventName] = (weight ? weight : 1);
+                                    }
+                                // Otherwise, create a custom event
+                                } else {
                                     createCustomEvent(key);
                                     getEventWeights(filename)["custom$" + key] = (weight ? weight : 1);
                                     // And switch on advanced mode

@@ -118,6 +118,7 @@ function clearAllData() {
     // Other input fields
     deactivateAdvancedMode();
     // Saved pack data
+    currentSelectedTrack = undefined;
     for (key in tracksWithOptions) {
         delete tracksWithOptions[key];
     }
