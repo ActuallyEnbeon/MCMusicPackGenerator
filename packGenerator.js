@@ -34,6 +34,20 @@ function getValidatedPackObject() {
     return packFile;
 }
 
+const reallyOldEventKeys = {
+    "creative": "music.game.creative",
+    "end": "music.game.end",
+    "dragon": "music.game.end.dragon",
+    "credits": "music.game.end.credits",
+    "nether_wastes": "music.game.nether",
+}
+
+function getReallyOldKey(eventkey, minFormat) {
+    if (minFormat[0] != undefined) minFormat = minFormat[0];
+    let reallyOldKey = reallyOldEventKeys[eventkey];
+    return ((minFormat < 2 && reallyOldKey) ? reallyOldKey : undefined);
+}
+
 function shouldIncludeOldNether(eventkey, minFormat) {
     if (minFormat[0] != undefined) minFormat = minFormat[0];
     return (eventkey == "nether_wastes" && minFormat <= 5);
@@ -128,9 +142,16 @@ function downloadPackZip() {
             // Get the soundEvent name for this event
             let soundEvent = getEventNameFromShortName(eventkey);
 
+            // And get the "really old" (pre-1.9) key, if it exists
+            let reallyOldKey = getReallyOldKey(eventkey, minFormat);
+
             // Create the soundEvent if it doesn't exist
             if (soundsFile[soundEvent] == undefined) {
                 soundsFile[soundEvent] = {"sounds": []};
+                // Special case for pre-1.9 sound events
+                if (minFormat < 2 && reallyOldKey) {
+                    soundsFile[reallyOldKey] = {"sounds": []};
+                }
                 // Special case for nether before 1.16
                 if (shouldIncludeOldNether(eventkey, minFormat)) {
                     soundsFile["music.nether"] = {"sounds": []};
@@ -150,6 +171,10 @@ function downloadPackZip() {
             if (weights[eventkey] != 1) soundData["weight"] = weights[eventkey];
 
             soundsFile[soundEvent]["sounds"].push(soundData);
+            // Special case for pre-1.9 sound events
+            if (reallyOldKey) {
+                soundsFile[reallyOldKey]["sounds"].push(soundData);
+            }
             // Special case for nether before 1.16
             if (shouldIncludeOldNether(eventkey, minFormat)) {
                 soundsFile["music.nether"]["sounds"].push(soundData);

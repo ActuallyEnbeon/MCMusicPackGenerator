@@ -9,11 +9,17 @@ function getEventNameFromShortName(shortName) {
 
 // -- Calculating reserved event names --
 const reservedEventNames = [
-    // These are special case event names, so need to be defined manually
-    "music.nether",
-    "minecraft:music.nether",
-    "music.overworld.jungle_and_forest",
-    "minecraft:music.overworld.jungle_and_forest",
+    // Special case event names need to be defined manually
+    // Pre-1.9 event names
+    "music.game.creative", "minecraft:music.game.creative",
+    "music.game.end", "minecraft:music.game.end",
+    "music.game.end.dragon", "minecraft:music.game.end.dragon",
+    "music.game.end.credits", "minecraft:music.game.end.credits",
+    "music.game.nether", "minecraft:music.game.nether",
+    // Pre-1.16 Nether
+    "music.nether", "minecraft:music.nether",
+    // 1.19.X Jungle & Forest
+    "music.overworld.jungle_and_forest", "minecraft:music.overworld.jungle_and_forest",
 ]
 
 for (const key in checkBoxes) {

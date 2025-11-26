@@ -86,6 +86,7 @@ maxFormatInput.onchange = function () {
 
 // -- Version map --
 const simpleVersionList = [
+    {"format": 1, "min": "1.6.1", "max": "1.8.9"},
     {"format": 2, "min": "1.9", "max": "1.10.2"},
     {"format": 3, "min": "1.11", "max": "1.12.2"},
     {"format": 4, "min": "1.13", "max": "1.14.4"},

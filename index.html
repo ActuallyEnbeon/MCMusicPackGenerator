@@ -16,7 +16,7 @@
 "Advanced mode allows you to:
 - Change the weight (likelihood) of tracks playing per-event
 - Add custom sound events
-- Precisely control the pack format">(?)</span>
+- Precisely control the pack format range">(?)</span>
 <button id="dark_mode_toggle">Dark mode</button>
 <br><br>
 <label for="tracks_upload">Upload music tracks (.OGG Vorbis)</label>
@@ -141,14 +141,16 @@
         <select id="min_version" name="min_version" required="true"></select>
         <label for="max_version">Max version</label>
         <select id="max_version" name="max_version" required="true"></select>
-        <span class="superscript cursor_help" title="Unfortunately, this tool doesn't support game versions before 1.9. Additionally, for versions before 1.20, the max version is locked.">(?)</span>
+        <span class="superscript cursor_help" title=
+        "The max version is locked for versions before 1.20. This is due to the way resource pack formats were stored in older versions.">(?)</span>
         <br>
         <div id="format_specifiers_advanced" class="advanced hidden">
             <label for="min_format">Min format</label>
-            <input type="number" min="2" max="70" step="1" id="min_format" name="min_format">
+            <input type="number" min="1" max="75" step="1" id="min_format" name="min_format">
             <label for="max_format">Max format</label>
-            <input type="number" min="2" max="70" step="1" id="max_format" name="max_format">
-            <span class="superscript cursor_help" title="If the min format is less than 15, game versions 1.20.2 and above will report that the pack is incompatible, even if the max format is 15 or higher.">(i)</span>
+            <input type="number" min="1" max="75" step="1" id="max_format" name="max_format">
+            <span class="superscript cursor_help" title=
+            "If the min format is less than 15, game versions 1.20.2 and above will report that the pack is incompatible, even if the max format is 15 or higher.">(i)</span>
             <br>
         </div>
         <br>
