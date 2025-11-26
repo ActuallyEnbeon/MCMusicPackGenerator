@@ -306,7 +306,7 @@ for (const toggle of collapsibleToggles) {
 }
 
 // -- Bare code --
-// Clear all fields when first loaded
+// Clear all data when first loaded
 clearAllData();
 packUploadInput.value = "";
 trackList.innerHTML = "";
