@@ -127,6 +127,7 @@ function clearAllData() {
     for (key in tracksWithOptions) {
         delete tracksWithOptions[key];
     }
+    flushChangesToSavedData();
 }
 
 function addFileToTrackList(file) {
@@ -146,6 +147,28 @@ function activateAdvancedMode() {
 function deactivateAdvancedMode() {
     advancedModeToggle.checked = false;
     advancedModeToggle.onchange();
+}
+
+function hasNotSaved() {
+    return (!deepEqual(savedData["tracks_with_options"], tracksWithOptions)
+            || !deepEqual(savedData["pack_options"], convertedPackOptions()));
+}
+
+function flushChangesToSavedData() {
+    savedData["pack_options"] = convertedPackOptions();
+    savedData["tracks_with_options"] = structuredClone(tracksWithOptions);
+}
+
+// Converts packOptions into a readable object
+function convertedPackOptions() {
+    let obj = {};
+    for (const key in packOptions.children) {
+        let element = packOptions.children[key];
+        if (element.nodeName == "INPUT") {
+            obj[key] = element.value;
+        }
+    }
+    return obj;
 }
 
 // Allows comparing objects
@@ -246,26 +269,27 @@ packUploadInput.onchange = function() {
 }
 
 // Unsaved changes warning
-function convertedPackOptions() {
-    let obj = {};
-    for (const key in packOptions.children) {
-        let element = packOptions.children[key];
-        if (element.nodeName == "INPUT") {
-            obj[key] = element.value;
-        }
-    }
-    return obj;
-}
-
 window.addEventListener("beforeunload", (e) => {
     // If the tracksWithOptions or the packOptions have changed,
-    if (!deepEqual(savedData["tracks_with_options"], tracksWithOptions)
-        || !deepEqual(savedData["pack_options"], convertedPackOptions())) {
+    if (hasNotSaved()) {
             // Warn the user of unsaved changes
             e.preventDefault();
             e.returnValue = ""; // Legacy browser support
     }
 });
+
+// Updating page title
+function updateTitle() {
+    if (currentSelectedTrack) saveTrackOptions(currentSelectedTrack);
+    let packName = document.getElementById("pack_name").value;
+    let title = (packName ? packName : "Unnamed");
+    if (hasNotSaved()) title += " *";
+    title += " - MC Music Pack Generator";
+    document.title = title;
+};
+
+document.addEventListener("input", updateTitle);
+document.addEventListener("change", updateTitle);
 
 // -- Track selection --
 var currentSelectedTrack;

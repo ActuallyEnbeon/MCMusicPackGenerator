@@ -146,8 +146,9 @@ function readPackZip(pack) {
                             tracksWithOptions[filename]["artist"] = locData[0];
                             tracksWithOptions[filename]["name"] = locData[1];
                             // Flush imported data to saved data list
-                            savedData["pack_options"] = convertedPackOptions();
-                            savedData["tracks_with_options"] = tracksWithOptions;
+                            flushChangesToSavedData();
+                            // And update page title
+                            updateTitle();
                         });
                     });
                 });

@@ -173,7 +173,8 @@ function downloadPackZip() {
             let packName = document.getElementById("pack_name").value;
             saveAs(blob, (packName ? packName : "pack") + ".zip");
             // Flush changes to saved data list
-            savedData["pack_options"] = convertedPackOptions();
-            savedData["tracks_with_options"] = tracksWithOptions;
+            flushChangesToSavedData();
+            // And update page title
+            updateTitle();
         });
 }
