@@ -179,9 +179,10 @@ function downloadPackZip() {
             if (shouldIncludeOldNether(eventkey, minFormat)) {
                 soundsFile["music.nether"]["sounds"].push(soundData);
             }
-            // Special case for jungle & forest in 1.19.X
-            if (shouldIncludeOldJungleAndForest(eventkey, minFormat)) {
-                soundsFile["music.overworld.jungle_and_forest"]["sounds"].push(soundData);
+            // Special case for jungle & forest in 1.19.X (plus don't add the sound if it's already present)
+            let jnf = soundsFile["music.overworld.jungle_and_forest"];
+            if (shouldIncludeOldJungleAndForest(eventkey, minFormat) && !jnf["sounds"].find((e) => e["name"] == soundData["name"])) {
+                jnf["sounds"].push(soundData);
             }
         }
 
