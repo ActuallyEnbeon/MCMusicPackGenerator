@@ -95,7 +95,8 @@ function readPackZip(pack) {
                 let soundsFolder = zip.folder("assets").folder("minecraft").folder("sounds");
                 soundsFolder.forEach(function (relativePath, fileObj) {
                     // First, get the filename and filepath
-                    let filename = relativePath.split("/").at(-1);
+                    let splitPath = relativePath.split("/");
+                    let filename = splitPath.at(-2) + "/" + splitPath.at(-1);
                     if (!filename.toLowerCase().endsWith(".ogg")) return; // Skip any files that aren't .OGGs
                     let filepath = removeFileExtension(relativePath);
                     fileObj.async("blob").then((blob) => {
