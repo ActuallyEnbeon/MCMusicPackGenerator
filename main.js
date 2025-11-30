@@ -154,13 +154,33 @@ function deactivateAdvancedMode() {
 }
 
 function hasNotSaved() {
-    return (!deepEqual(savedData["tracks_with_options"], tracksWithOptions)
+    return (!deepEqual(savedData["tracks_with_options"], prunedTracksWithOptions())
             || !deepEqual(savedData["pack_options"], convertedPackOptions()));
 }
 
 function flushChangesToSavedData() {
+    savedData["tracks_with_options"] = prunedTracksWithOptions();
     savedData["pack_options"] = convertedPackOptions();
-    savedData["tracks_with_options"] = structuredClone(tracksWithOptions);
+}
+
+// Copies tracksWithOptions and gets rid of all zero-weight events
+function prunedTracksWithOptions() {
+    let obj = {};
+    for (const track in tracksWithOptions) {
+        trackObj = tracksWithOptions[track];
+        obj[track] = {
+            "name": trackObj["name"],
+            "artist": trackObj["artist"],
+            "volume": trackObj["volume"],
+            "weights": []
+        }
+        for (const event in trackObj["weights"]) {
+            if (trackObj["weights"][event]) {
+                obj[track]["weights"][event] = trackObj["weights"][event];
+            }
+        }
+    }
+    return obj;
 }
 
 // Converts packOptions into a readable object
