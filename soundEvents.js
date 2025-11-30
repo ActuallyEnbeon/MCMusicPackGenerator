@@ -28,12 +28,17 @@ for (const key in checkBoxes) {
     reservedEventNames.push("minecraft:" + soundEvent);
 }
 
+const invalidCharsRegex = /[^a-z0-9_.:\-\/]/;
+
 // -- Interaction for adding custom sound events --
 function createCustomEvent(eventkey) {
     // Input sanitisation
     let prefixedEvent = "custom$" + eventkey;
     if (!eventkey) {
         alert("Error while adding custom event: Custom event key cannot be empty.");
+        return false;
+    } else if (invalidCharsRegex.test(eventkey)) {
+        alert("Error while adding custom event: Event key \"" + eventkey + "\" contains one or more invalid characters.");
         return false;
     } else if (reservedEventNames.includes(eventkey)) {
         alert("Error while adding custom event: The event \"" + eventkey +"\" is a vanilla Minecraft event already used by this tool.");
