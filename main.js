@@ -60,11 +60,15 @@ function createWeightInput(box) {
     input.disabled = true;
     // Insert the element into the document
     box.insertAdjacentElement('afterend', input);
-    // Keep track of the element for interaction later
+    // Keep track of the element for interactions
     weightInputs[box.name] = input;
-    // And finally, make the box enable and disable the weight input correctly
+    // Make the box enable and disable the weight input correctly
     box.onchange = () => {
         weightInputs[box.name].disabled = !box.checked;
+    }
+    // Enforce integer values for the weight input
+    input.onchange = () => {
+        weightInputs[box.name].value = parseInt(weightInputs[box.name].value);
     }
     return input;
 }

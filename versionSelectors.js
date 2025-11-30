@@ -65,8 +65,9 @@ maxVersionInput.onchange = function () {
     }
 }
 
-// Make format selectors affect version selectors
+// Make format selectors affect version selectors & enforce integer values
 minFormatInput.onchange = function () {
+    minFormatInput.value = parseInt(minFormatInput.value);
     try {
         minVersionInput.value = getVersionFromFormat(minFormatInput.value, false);
     } catch (e) {
@@ -76,6 +77,7 @@ minFormatInput.onchange = function () {
 }
 
 maxFormatInput.onchange = function () {
+    maxFormatInput.value = parseInt(maxFormatInput.value);
     try {
         maxVersionInput.value = getVersionFromFormat(maxFormatInput.value, true);
     } catch (e) {
