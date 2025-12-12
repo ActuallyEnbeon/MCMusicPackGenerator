@@ -110,4 +110,5 @@ const simpleVersionList = [
     {"format": 63, "min": "1.21.6", "max": "1.21.6"},
     {"format": 64, "min": "1.21.7", "max": "1.21.8"},
     {"format": 69, "min": "1.21.9", "max": "1.21.10"},
+    {"format": 75, "min": "1.21.11", "max": "1.21.11"},
 ];
