@@ -91,6 +91,9 @@ function readPackZip(pack) {
             // Prepare sounds.json
             zip.file("assets/minecraft/sounds.json").async("string").then(function(data) {
                 let soundsJSON = JSON.parse(data);
+                // These lines are here to ensure that advanced mode alerts only occur once
+                let customWeightHasNotProccedYet = true;
+                let customEventHasNotProccedYet = true;
                 // Read all sound files
                 let soundsFolder = zip.folder("assets").folder("minecraft").folder("sounds");
                 soundsFolder.forEach(function (relativePath, fileObj) {
@@ -111,9 +114,10 @@ function readPackZip(pack) {
                                 // Set the events list
                                 let weight = soundObj["weight"];
                                 // If weight is nonstandard, switch on advanced mode
-                                if (weight) {
+                                if (weight && customWeightHasNotProccedYet) {
                                     activateAdvancedMode();
                                     alert("Alert: This pack uses nonstandard weights. Advanced mode has been switched on.");
+                                    customWeightHasNotProccedYet = false;
                                 }
                                 // If the event's name is reserved...
                                 if (reservedEventNames.includes(key)) {
@@ -127,8 +131,11 @@ function readPackZip(pack) {
                                     createCustomEvent(key);
                                     getEventWeights(filename)["custom$" + key] = (weight ? weight : 1);
                                     // And switch on advanced mode
-                                    activateAdvancedMode();
-                                    alert("Alert: This pack uses custom sound events. Advanced mode has been switched on.");
+                                    if (customEventHasNotProccedYet) {
+                                        activateAdvancedMode();
+                                        alert("Alert: This pack uses custom sound events. Advanced mode has been switched on.");
+                                        customEventHasNotProccedYet = false;
+                                    }
                                 }
                                 // And get the sound's volume if it's not 1
                                 let newVolume = soundObj["volume"];
