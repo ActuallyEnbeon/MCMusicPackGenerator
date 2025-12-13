@@ -4,6 +4,15 @@ body {
   color: black;
 }
 
+#titlebox {
+  display: flex;
+  align-items: baseline;
+}
+
+#by_me {
+  margin-left: 0.5em;
+}
+
 .dark_mode {
   background-color: #281E29;
   color: white;
