@@ -82,7 +82,9 @@ function readPackZip(pack) {
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(new File([blob], "pack.png"));
                     iconFileUpload.files = dataTransfer.files;
-                    iconFileUpload.onchange();
+                    updatePreviewIcon(true);
+                    // Then flush the icon to saved data
+                    flushChangesToSavedData();
                 }).catch(e => {
                     console.error(e);
                     alertCouldNotRead(pack.name, "pack.png could not be loaded.");

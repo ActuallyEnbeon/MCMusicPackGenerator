@@ -189,20 +189,31 @@ function convertedPackOptions() {
     for (const key in packOptions.children) {
         let element = packOptions.children[key];
         if (element.nodeName == "INPUT") {
-            obj[key] = element.value;
+            obj[element.id] = element.value;
         }
     }
+    obj["icon_hash"] = generateHash(document.getElementById("icon_preview").src);
     return obj;
 }
 
 // Allows comparing objects
 function deepEqual(x, y) {
-  const ok = Object.keys, tx = typeof x, ty = typeof y;
-  return x && y && tx === 'object' && tx === ty ? (
-    ok(x).length === ok(y).length &&
-      ok(x).every(key => deepEqual(x[key], y[key]))
-  ) : (x === y);
+    const ok = Object.keys, tx = typeof x, ty = typeof y;
+    return x && y && tx === 'object' && tx === ty ? (
+        ok(x).length === ok(y).length &&
+        ok(x).every(key => deepEqual(x[key], y[key]))
+    ) : (x === y);
 }
+
+// Allows hashing data for more efficient comparisons
+function generateHash(string) {
+    let hash = 0;
+    for (const char of string) {
+        hash = (hash << 5) - hash + char.charCodeAt(0);
+        hash |= 0; // Constrain to 32bit integer
+    }
+    return hash;
+};
 
 // -- Interaction behaviour --
 // Advanced mode toggle
@@ -262,18 +273,24 @@ deleteTrackButton.onclick = function() {
 }
 
 // Pack icon uploading
-iconFileUpload.onchange = function() {
+function updatePreviewIcon(shouldFlushAfterLoad) {
     let file = iconFileUpload.files[0];
     if (file) {
         // use FileReader to generate preview image
         const reader = new FileReader();
         reader.onload = function (e) {
             document.getElementById("icon_preview").src = e.target.result;
+            if (shouldFlushAfterLoad) flushChangesToSavedData();
+            updateTitle();
         };
         reader.readAsDataURL(file);
     } else {
         document.getElementById("icon_preview").src = "";
     }
+}
+
+iconFileUpload.onchange = function() {
+    updatePreviewIcon();
 }
 
 // Pack icon clearing
